@@ -1,0 +1,16 @@
+class Solution {
+    int[][] dp;
+    public int paintWalls(int[] cost, int[] time) {
+        int n = cost.length;
+        dp = new int[n][n];
+        return dfs(0,cost,time,0);
+    }
+    public int dfs(int i, int[] cost, int[] time, int paintedWallsCount){
+        if(paintedWallsCount>=cost.length) return 0;
+        if(i>=cost.length) return 1000000000;
+        if(dp[i][paintedWallsCount]!=0) return dp[i][paintedWallsCount];
+        int notTake = dfs(i+1,cost,time,paintedWallsCount);
+        int take = cost[i]+dfs(i+1,cost,time, paintedWallsCount+1+time[i]);
+        return dp[i][paintedWallsCount]=Math.min(take,notTake);
+    }
+}

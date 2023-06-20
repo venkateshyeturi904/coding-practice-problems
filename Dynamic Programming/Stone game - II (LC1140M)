@@ -1,0 +1,26 @@
+class Solution {
+    int[] piles;
+    Integer[][][] dp;
+    public int stoneGameII(int[] piles) {
+        this.piles = piles;
+        int n = piles.length;
+        dp = new Integer[n][2][n+1];
+        return dfs(0,1,1);
+    }
+    public int dfs(int i, int alice, int M){
+        if(i>=piles.length) return 0;
+        if(dp[i][alice][M]!=null) return dp[i][alice][M];
+        int cumSum = 0;
+        int res = alice==1?0:Integer.MAX_VALUE;
+        for(int m=1;m<=(2*M);m++){
+            if(i+m-1==piles.length) break;
+            cumSum += piles[i+m-1];
+            if(alice==1){
+                res = Math.max(res, cumSum+dfs(i+m,0,Math.max(M,m)));
+            }else{
+                res = Math.min(res, dfs(i+m,1,Math.max(M,m)));
+            }
+        }
+        return dp[i][alice][M]=res;
+    }
+}

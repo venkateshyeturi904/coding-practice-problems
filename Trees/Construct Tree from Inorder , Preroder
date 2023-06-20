@@ -1,0 +1,23 @@
+/*
+Preorder traversal : root, left, right
+Inorder traversal : left, root, right
+*/
+
+class Solution {
+    Map<Integer,Integer> map = new HashMap<>();
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        int n = preorder.length;
+        for(int i=0;i<n;i++) map.put(inorder[i],i);
+        return getRoot(inorder, 0, n-1, preorder, 0, n-1);
+    }
+    public TreeNode getRoot(int[] inorder, int inStart, int inEnd, int[] preorder, int preStart, int preEnd){
+        if(inEnd<inStart || preEnd<preStart) return null;
+        int rootValue = preorder[preStart];
+        int rootIndexInorder = map.get(rootValue);
+        TreeNode root = new TreeNode(rootValue);
+        int countLeft = rootIndexInorder-inStart;
+        root.left = getRoot(inorder,inStart, rootIndexInorder-1,preorder, preStart+1, preStart+countLeft);
+        root.right = getRoot(inorder, rootIndexInorder+1, inEnd, preorder, preStart+1+countLeft, preEnd);
+        return root;
+    }
+}

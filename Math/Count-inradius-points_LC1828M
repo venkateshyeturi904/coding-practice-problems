@@ -1,0 +1,18 @@
+class Solution {
+    public int[] countPoints(int[][] points, int[][] queries) {
+        int n = queries.length;
+        int[] ans = new int[n];
+        for(int i=0;i<n;i++){
+            int[] q = queries[i];
+            int x1 = q[0];
+            int y1 = q[1];
+            int r = q[2];
+            int count = 0;
+            for(int[] p : points){
+                if(Math.pow(p[0]-x1,2)+Math.pow(p[1]-y1,2)<=Math.pow(r,2)) count++;
+            }
+            ans[i] = count;
+        }
+        return ans;
+    }
+}

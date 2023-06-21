@@ -1,0 +1,7 @@
+/* Find the missing number in 0 to n for given array of length n */
+
+class Solution {
+    public int missingNumber(int[] nums) {
+        return (int)((long)(((nums.length*(nums.length+1))/2))-Arrays.stream(nums).sum());
+    }
+}

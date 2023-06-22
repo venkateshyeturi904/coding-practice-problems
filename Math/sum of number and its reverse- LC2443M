@@ -1,0 +1,12 @@
+class Solution {
+    public boolean sumOfNumberAndReverse(int num) {
+        if(num==0) return true;
+        for(int i=1;i<num;i++){
+            StringBuilder n = new StringBuilder(i+"");
+            StringBuilder nRev = new StringBuilder(n.toString());
+            nRev = nRev.reverse();
+            if(Integer.parseInt(n.toString())+Integer.parseInt(nRev.toString())==num) return true;
+        }
+        return false;
+    }
+}

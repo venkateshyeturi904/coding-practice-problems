@@ -1,0 +1,32 @@
+/*Find the no.of subarrays with given max and min*/
+class Solution {
+    public long countSubarrays(int[] nums, int minK, int maxK) {
+        boolean foundMax = false;
+        boolean foundMin = false;
+        int minStart = 0;
+        int maxStart = 0;
+        long count = 0;
+        int start = 0;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]<=maxK && nums[i]>=minK){
+
+                if(nums[i]==minK){
+                    foundMin = true;
+                    minStart = i;
+                }
+                if(nums[i]==maxK){
+                    foundMax = true;
+                    maxStart = i;
+                }
+                if(foundMax && foundMin){
+                    count += Math.min(minStart,maxStart)-start+1;
+                }
+            }else{
+                foundMax = false;
+                foundMin = false;
+                start = i+1;
+            }
+        }
+        return count;
+    }
+}

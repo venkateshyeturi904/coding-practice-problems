@@ -1,0 +1,39 @@
+/*(A|x)&(B|X) = C*/
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) {
+    
+      Scanner sc = new Scanner(System.in);
+      int tt = sc.nextInt();
+      while(tt-->0){
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+        int c = sc.nextInt();
+        int res = 0;
+        int last = 1;
+        int size = 1;
+        boolean broke = false;
+        size = Math.max(size, Integer.toBinaryString(a).length());
+        size = Math.max(size, Integer.toBinaryString(b).length());
+        size = Math.max(size, Integer.toBinaryString(c).length());
+        while(size-->0){
+          int la = a&last;
+          int lb = b&last;
+          int lc = c&last;
+          if(lc>0){
+            if(la==0 || lb==0) res += last;
+          }else{
+            if(la>0 && lb>0){
+              broke = true;
+              break;
+            }
+          }
+          last = last << 1;
+        }
+        System.out.println(broke?-1 :res);
+      }
+      sc.close();
+    }
+  }

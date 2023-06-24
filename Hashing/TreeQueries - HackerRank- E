@@ -1,0 +1,78 @@
+/*
+You initially have a tree with a single node , which is also the root of the tree. You are to perform  queries of the following type.
+
+Type  : "  " -> A new edge of length  is added between vertex  and the vertex  where  is the number of nodes already present in the tree  .
+Type  : "" -> Print the current depth of the tree. The depth of a tree is defined as the length of the maximum path from root to any node of the tree.
+NOTE : It is guaranteed that there will be atleast one query of Type  and that the vertex  in querry  will always be less than or equal to the number of nodes in the tree till that querry.
+
+Input Format
+
+First line contains an integer , the number of queries.  lines follow.
+
+Each of the next  lines contain a string representing a Type  querry or a Type  query.
+
+Constraints
+
+
+
+Output Format
+
+For each querry of type 2, print a single integer, the depth of the tree.
+
+Sample Input 0
+
+3
+?
++ 1 5
+?
+Sample Output 0
+
+0
+5
+Explanation 0
+
+Originally the depth of the tree is zero.
+
+Now we add an edge of weight  between vertex  and .
+
+The new depth of the tree now becomes .
+*/
+import java.io.*;
+import java.util.*;
+import javafx.util.*;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int nq = sc.nextInt();
+        String[][] input = new String[nq][3];
+        for(int i=0;i<nq;i++){
+            String s1 = sc.next();
+            if(s1.charAt(0)!='?'){
+                input[i][0] = s1;
+                input[i][1] = sc.next();
+                input[i][2] = sc.next();
+            }else{
+                input[i][0] = s1;
+            }
+        }
+        sc.close();
+        long[] dist = new long[nq+2];
+        dist[1] = (long)0;
+        long ans = 0;
+        int count = 1;
+        for(int i=0;i<nq;i++){
+            if(input[i][0].charAt(0)=='?'){
+                System.out.println(ans);
+            }else{
+                int v = Integer.parseInt(input[i][1]);
+                int w = Integer.parseInt(input[i][2]);
+                count++;
+                dist[count] = dist[v] + w;
+                ans = Math.max(ans, dist[count]);
+            }
+        }
+        sc.close();
+    }
+}

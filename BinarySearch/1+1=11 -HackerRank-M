@@ -1,3 +1,35 @@
+/*
+It is Bob's birthday today and he is gifted a string  on this occasion. To know the happiness that Bob got from this gift, we need to find the length of the largest good string in . A substring of a string  is said to be good, if it occurs twice or more in  without overlapping. More formally, a substring is said to occur twice without overlapping in string  if there exist three positive integers  such that:
+
+, where  is the length of string 
+ for 
+Similarly, this can be extended for substrings that occur more than twice in  without overlapping.
+
+Find the happiness that Bob got from string .
+
+Input Format
+
+The input consists of two lines, where the first line contains , the length of string , and the second line contains string .
+
+Constraints
+
+Length of string  is 
+ consists of lowercase english alphabet
+Output Format
+
+Find the maximum length of a non-empty substring occuring in , if there is no substring which satisfies the above condition, print .
+
+Sample Input 0
+
+5
+ababa
+Sample Output 0
+
+2
+Explanation 0
+
+The substrings satisfying the conditions are ,  and . The maximum length among them is , which is the answer. Note that string  doesn't occur twice without overlap in the given string.
+*/
 import java.io.*;
 import java.util.*;
 

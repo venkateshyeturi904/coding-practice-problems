@@ -1,0 +1,28 @@
+class Solution {
+    int n;
+    int[] nums;
+    Integer[][] dp;
+    int totalSum;
+    public int tallestBillboard(int[] nums) {
+        this.nums = nums;
+        this.n = nums.length;
+        totalSum = Arrays.stream(nums).sum();
+        dp = new Integer[n][10000+1];
+        int ans = dfs(0,0);
+        return ans<0 ? 0 : ans;
+    }
+    public int dfs(int i, int diff){
+        if(i>=n){
+            if(diff==0) return 0;
+            return Integer.MIN_VALUE;
+        }
+        if(dp[i][diff+5000]!=null) return dp[i][diff+5000];
+        int notTake = 0;
+        int takeFirst = 0;
+        int takeSecond = 0;
+        notTake = dfs(i+1, diff);
+        takeFirst = nums[i]+dfs(i+1, diff+nums[i]);
+        takeSecond = dfs(i+1, diff-nums[i]);
+        return dp[i][diff+5000]=Math.max(notTake, Math.max(takeFirst, takeSecond));
+    }
+}

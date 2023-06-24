@@ -1,0 +1,12 @@
+
+import java.util.*;
+import java.io.*;
+
+public class Problem210780970{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int input = sc.nextInt();
+        System.out.println(input%2==0?"YES":"NO");
+        sc.close();
+    }
+}

@@ -1,0 +1,34 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int len = sc.nextInt();
+        String input = sc.next();
+        int left = 1;
+        int right = len/2;
+        int ans = 0;
+        while(left<=right){
+            int mid = (left+right)/2;
+            if(isFound(mid,input)){
+                ans = mid;
+                left = mid+1;
+            }else{
+                right = mid-1;
+            }
+        }
+        System.out.println(ans);
+        sc.close();
+    }
+    public static boolean isFound(int len, String s){
+        for(int i=0;i+len<=s.length();i++){
+            String first = s.substring(i,i+len);
+            for(int j=i+len;j+len<=s.length();j++){
+                if(first.equals(s.substring(j,j+len))) return true;
+            }
+        }
+        return false;
+    }
+}

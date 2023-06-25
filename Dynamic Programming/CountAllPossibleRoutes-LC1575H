@@ -1,0 +1,27 @@
+class Solution {
+    int mod = 1000000007;
+    int[] loc;
+    int n;
+    int finish;
+    Integer[][] dp;
+    public int countRoutes(int[] locations, int start, int finish, int fuel) {
+        this.loc = locations;
+        this.n = locations.length;
+        this.finish = finish;
+        dp = new Integer[n+1][201];
+        int count = 0;
+        if(start==finish) count = 1;
+        return count+dfs(start,fuel);
+    }
+    public int dfs(int i, int fuel){
+        if(fuel<0) return 0;
+        if(dp[i][fuel]!=null) return dp[i][fuel];
+        int count = 0;
+        for(int j=0;j<n;j++){
+            if(i==j) continue;
+            if(j==finish && fuel>=Math.abs(loc[i]-loc[j])) count += 1;
+            count = count%mod + dfs(j,fuel-Math.abs(loc[i]-loc[j]));
+        }
+        return dp[i][fuel]=count%mod;
+    }
+}

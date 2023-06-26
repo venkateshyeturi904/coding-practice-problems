@@ -1,0 +1,32 @@
+import java.util.*;
+
+
+
+public class NextRound {
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        String firstLine = sc.nextLine();
+        String[] firstLineSplit = firstLine.split(" ");
+        int n = Integer.parseInt(firstLineSplit[0]);
+        int k = Integer.parseInt(firstLineSplit[1]);
+        int[] arr = new int[n];
+        String inputLine = sc.nextLine();
+        String[] inputArray = inputLine.split(" ");
+        for(int i=0;i<n;i++) arr[i] = Integer.parseInt(inputArray[i]);
+        int ans = getResult(n,k,arr);
+        System.out.println(ans);
+        sc.close();
+    }
+    public static int getResult(int n, int k, int[] arr){
+        int ans = 0;
+        for(int i=0;i<k;i++){
+            if(arr[i]>0) ans++;
+        }
+        int save = arr[k-1];
+        for(int i=k;i<n;i++){
+            if(arr[i]>0 && arr[i]==save) ans++;
+            else break;
+        }
+        return ans;
+    }
+}

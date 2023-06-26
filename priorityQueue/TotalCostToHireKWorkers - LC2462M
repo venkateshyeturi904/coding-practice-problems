@@ -1,0 +1,53 @@
+/*
+# Intuition
+<!-- Describe your first thoughts on how to solve this problem. -->
+Sort the priorityQueue as mentioned in the question i.e 
+```
+(a,b)-> a[0]-b[0] != 0 ? a[0]-b[0] : a[1]-b[1]
+```
+Initially load the priorityqueue with `candidates` no.of elements from both the ends ( Stop loading if overlapping occured i.e loading an already loaded element )
+
+For each value of k, remove one element from priorityQueue and note down that index to know from which end the element is being removed. 
+
+If the removed element is from left end we have to increment the left pointer and then add the element. Otherwise the same we have to do from right side. 
+
+If overlapping occured but still k elements are not grabbed, we still have to grab remaining elements irrespective of indices. 
+
+# Complexity
+- Time complexity: $O(nlogn)$
+<!-- Add your time complexity here, e.g. $$O(n)$$ -->
+
+- Space complexity: $O(n)$
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+*/
+
+// CODE : 
+
+class Solution {
+    public long totalCost(int[] costs, int k, int cand) {
+        int n = costs.length;
+        long ans = 0;
+        int l = cand-1;
+        int r = n-cand;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b)->a[0]-b[0]!=0?a[0]-b[0]:a[1]-b[1]);
+        for(int i=0;i<cand;i++)                  pq.offer(new int[]{costs[i],i});
+        for(int i=n-1;i>=n-cand && i>cand-1;i--) pq.offer(new int[]{costs[i],i});
+        while(k-->0){
+            int[]  remove = pq.poll();
+            int valueRemoved = remove[0];
+            int indexRemoved = remove[1];
+            ans += valueRemoved;
+            if(indexRemoved<=l){
+                l++;
+                if(l>=r) break;        
+                pq.offer(new int[]{costs[l],l});
+            }else{
+                r--;
+                if(r<=l) break;
+                pq.offer(new int[]{costs[r],r});
+            }
+        }
+        while(k-->0) ans+=pq.poll()[0];
+        return ans;
+    }
+}

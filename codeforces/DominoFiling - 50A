@@ -1,0 +1,25 @@
+import java.util.*;
+
+public class DominoPiling {
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        String str = sc.nextLine();
+        String[] spl = str.split(" ");
+        int M = Integer.parseInt(spl[0]);
+        int N = Integer.parseInt(spl[1]);
+        int ans = getResult(M,N);
+        System.out.println(ans);
+        sc.close();
+    }
+    public static int getResult(int M, int N){
+        if(M+N==2) return 0;
+        int max = Math.max(M,N);
+        int min = Math.min(M,N);
+        if(min==1) return max/2;
+        if(min%2==0){
+            return max*(min/2);
+        }else{
+            return max*(min/2) + max/2;
+        }
+    }
+}

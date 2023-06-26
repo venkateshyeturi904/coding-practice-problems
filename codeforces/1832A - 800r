@@ -1,0 +1,24 @@
+import java.util.*;
+import java.io.*;
+
+public class A1832 {
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int nt = Integer.parseInt(br.readLine());
+        List<String> inputList = new ArrayList<>();
+        while(nt-->0){
+            inputList.add(br.readLine());
+        }
+        for(String str : inputList){
+            boolean found = false;
+            char first = str.charAt(0);
+            for(int i=1;i<str.length()/2;i++){
+                if(str.charAt(i)!=first){
+                    found = true;
+                    break;
+                }
+            }
+            System.out.println(found?"YES":"NO");
+        }
+    }
+}

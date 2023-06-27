@@ -1,0 +1,52 @@
+import java.util.*;
+import java.io.*;
+
+public class D1843 {
+    public static Long[] dp ;
+    public static Map<Integer,List<Integer>> map;
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int nt = Integer.parseInt(br.readLine());
+        while(nt-->0){
+            int n = Integer.parseInt(br.readLine());
+            dp = new Long[n+1];
+            map = new HashMap<>();
+            int ne = n-1;
+            for(int i=1;i<=n;i++) map.put(i,new ArrayList<>());
+            while(ne-->0){
+                String input = br.readLine();
+                String[] inputs = input.split(" ");
+                int u = Integer.parseInt(inputs[0]);
+                int v = Integer.parseInt(inputs[1]);
+                map.get(u).add(v);
+                map.get(v).add(u);
+            }
+            long store = dfs(1,1);
+            int nq = Integer.parseInt(br.readLine());
+            int[][] qs = new int[nq][2];
+            for(int i=0;i<nq;i++){
+                String[] inputs = br.readLine().split(" ");
+                qs[i][0] = Integer.parseInt(inputs[0]);
+                qs[i][1] = Integer.parseInt(inputs[1]);
+            }
+            for(int[] q : qs){
+                int a = q[0];
+                int b = q[1];
+                long ans = dp[a] * dp[b];
+                System.out.println(ans);
+            }
+        }
+        br.close(); 
+    }
+    public static long dfs(int i, int prev){
+        long count = 0;
+        if(dp[i]!=null) return dp[i];
+        for(int link : map.get(i)){
+            if(link==prev) continue;
+            count += dfs(link,i);
+        }
+        if(map.get(i).size()==1 && i!=1) count = 1;
+        return dp[i] = count;
+    }
+}
+

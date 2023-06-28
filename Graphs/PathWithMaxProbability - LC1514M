@@ -1,0 +1,42 @@
+/*
+Intuition
+Logic : Using priorityQueue, if we are at some node x with some probability y, whatever may be the next node, whatever may be the next probability, definitely it will be lesser than y. This is the reason, we can immediately return probs[end] if end is visited somewhere. Because even if there is a chance to meet end afterwards, it definitely gives lesser probability.
+
+Approach
+Apply simply Dijkstra algorithm
+
+Complexity
+Time complexity: O(V+ElogV)O(V+ElogV)O(V+ElogV)
+Space complexity: O(E+V)O(E+V)O(E+V)
+*/
+
+class Solution {
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
+        double[] probs = new double[n+1];
+        Map<Integer,List<Pair<Integer,Double>>> map = new HashMap<>();
+        for(int i=0;i<n;i++)  map.put(i, new ArrayList<>());
+        for(int i=0;i<edges.length;i++){
+            int[] e = edges[i];
+            map.get(e[0]).add(new Pair<>(e[1],succProb[i]));
+            map.get(e[1]).add(new Pair<>(e[0],succProb[i]));
+        }
+        PriorityQueue<Pair<Integer,Double>> pq = new PriorityQueue<>((a,b)->Double.compare(b.getValue(),a.getValue()));
+        pq.offer(new Pair<>(start,1.0));
+        while(!pq.isEmpty()){
+            Pair<Integer,Double> curr = pq.poll();
+            int currNode = curr.getKey();
+            double probSoFar = curr.getValue();
+            if(currNode==end) return probs[end];
+            for(var pairLink : map.get(currNode)){
+                int nextNode = pairLink.getKey();
+                double nextProb = pairLink.getValue();
+                double updatedProb = nextProb * probSoFar;
+                if(probs[nextNode]<updatedProb){
+                    probs[nextNode] = updatedProb;
+                    pq.offer(new Pair<>(nextNode, updatedProb));
+                }
+            }
+        }
+        return 0.0;
+    }
+}

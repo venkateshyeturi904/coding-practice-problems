@@ -1,0 +1,55 @@
+import java.util.*;
+
+class Solution {
+    public int shortestPathAllKeys(String[] grid) {
+        int k = 0, startX = 0, startY = 0;
+        int m = grid.length;
+        int n = grid[0].length();
+        char[][] matrix = new char[m][n];
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                matrix[i][j] = grid[i].charAt(j);
+                if(matrix[i][j] >= 'a' && matrix[i][j] <= 'z') k++;
+                if(matrix[i][j] == '@'){
+                    startX = i;
+                    startY = j;
+                }
+            }
+        }
+        int finalKeys = (1<<k)-1;   // or finalKeys = finalKeys*10 + 1 for k times . 
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{startX, startY, 0, 0});
+        int[][] dir = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}};
+        Set<String> visited = new HashSet<>(); 
+        while(!q.isEmpty()){
+            int[] cur = q.poll();
+            int currX = cur[0];
+            int currY = cur[1];
+            int distSoFar = cur[2];
+            int keysCollectedSoFar = cur[3];
+            String state = currX + "-" + currY + "-" + keysCollectedSoFar; 
+            if(visited.contains(state))
+                continue;
+            visited.add(state);
+
+            for(int i = 0; i < 4; i++){
+                int nextX = currX + dir[i][0];
+                int nextY = currY + dir[i][1];
+                if(nextX >= 0 && nextY >= 0 && nextX < m && nextY < n && matrix[nextX][nextY] != '#'){
+                    int val = matrix[nextX][nextY];
+                    if(val >= 'A' && val <= 'Z'){
+                        if((keysCollectedSoFar & (1 << (val - 'A'))) == 0){
+                            continue;
+                        }
+                    }
+                    int temp = keysCollectedSoFar;
+                    if(val >= 'a' && val <= 'z') keysCollectedSoFar = (keysCollectedSoFar | (1 << (val - 'a')));
+                    if(keysCollectedSoFar == finalKeys) return distSoFar + 1;
+                    q.offer(new int[]{nextX, nextY, distSoFar + 1, keysCollectedSoFar});
+                    keysCollectedSoFar = temp;
+                }
+            }
+        }
+        return -1;
+    }
+}

@@ -1,0 +1,48 @@
+class Solution {
+    public int latestDayToCross(int row, int col, int[][] cells) {
+        int ans = -1;
+        int left = 1;
+        int right = cells.length;
+        while(left<=right){
+            int mid = left+(right-left)/2;
+            if(isPossible(mid,row,col,cells)){
+                ans = mid;
+                left = mid+1;
+            }else{
+                right = mid-1;
+            }
+        }
+        return ans;
+    }
+    public boolean isPossible(int mid, int r, int c, int[][] cells){
+        int[][] grid = new int[r][c];
+        boolean[][] visited = new boolean[r][c];
+        int[][] dir = {{1,0},{0,1},{-1,0},{0,-1}};
+        for(int i=0;i<mid;i++){
+            int x = cells[i][0]-1;
+            int y = cells[i][1]-1;
+            grid[x][y] = 1;
+        }
+        Queue<int[]> q = new LinkedList<>();
+        for(int j=0;j<c;j++){
+            if(grid[0][j]==0){ 
+                q.offer(new int[]{0,j});
+                visited[0][j] = true;
+            }
+        }
+        while(!q.isEmpty()){
+            int[] cur = q.poll();
+            int curX = cur[0];
+            int curY = cur[1];
+            if(curX==r-1) return true;
+            for(int k=0;k<4;k++){
+                int nextX = curX + dir[k][0];
+                int nextY = curY + dir[k][1];
+                if(nextX<0 || nextY<0 || nextX>=r || nextY>=c || grid[nextX][nextY]==1 || visited[nextX][nextY]) continue;
+                visited[nextX][nextY] = true;
+                q.offer(new int[]{nextX,nextY});
+            }
+        }
+        return false;
+    }
+}

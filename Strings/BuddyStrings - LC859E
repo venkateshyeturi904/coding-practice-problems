@@ -1,0 +1,32 @@
+class Solution {
+    public boolean buddyStrings(String s, String goal) {
+        if(s.length() != goal.length()) return false;
+        char s1Found = 'x';
+        char g1Found = 'x';
+        boolean visited = false;
+        Set<Character> set = new HashSet<>();
+        boolean diffFound = false;
+        boolean settled = false;
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)!=goal.charAt(i)){
+                if(settled) return false;
+                if(!diffFound){
+                    diffFound = true;
+                    s1Found = s.charAt(i);
+                    g1Found = goal.charAt(i);
+                }else{
+                    if(s.charAt(i)==g1Found && s1Found==goal.charAt(i)){
+                        settled = true;
+                    }else return false;
+                }
+            }else{
+                if(set.contains(s.charAt(i))){
+                    visited = true;
+                }
+                set.add(s.charAt(i));
+            }
+        }
+        return settled || (visited && !diffFound);
+    }
+}
+

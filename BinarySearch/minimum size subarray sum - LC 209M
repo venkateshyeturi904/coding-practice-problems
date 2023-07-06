@@ -1,0 +1,35 @@
+class Solution {
+    int n;
+    int target;
+    int[] nums;
+    int[] prefix;
+    public int minSubArrayLen(int target, int[] nums) {
+        this.n = nums.length;
+        this.target = target;
+        this.nums = nums;
+        prefix = new int[n];
+        prefix[0] = nums[0];
+        for(int i=1;i<n;i++) prefix[i] = prefix[i-1]+nums[i];
+        int left = 1;
+        int right = n;
+        int ans = 0;
+        while(left<=right){
+            int mid = (left+right)/2;
+            if(isPossible(mid)){
+                ans = mid;
+                right = mid-1;
+            }else{
+                left = mid+1;
+            }
+        }
+        return ans;
+    }
+    public boolean isPossible(int diff){
+        if(prefix[diff-1]>=target) return true;
+        for(int i=0;i+diff<n;i++){
+            if(prefix[i+diff]-prefix[i]>=target) return true;
+            // if(diff>=i&&prefix[i+diff]>=target ) return true;
+        }
+        return false;
+    }
+}

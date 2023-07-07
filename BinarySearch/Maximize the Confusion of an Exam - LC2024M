@@ -1,0 +1,49 @@
+class Solution {
+    int n;
+    int k;
+    public int maxConsecutiveAnswers(String answerKey, int k) {
+        this.k = k;
+        this.n = answerKey.length();
+        int[] pre1 = new int[n];
+        int[] pre2 = new int[n];
+        if(answerKey.charAt(0)=='T') pre1[0] = 1;
+        if(answerKey.charAt(0)=='F') pre2[0] = 1;
+        for(int i=1;i<n;i++){
+            pre1[i] = pre1[i-1] + ((answerKey.charAt(i)=='T') ? 1 : 0) ;
+            pre2[i] = pre2[i-1] + ((answerKey.charAt(i)=='F') ? 1: 0) ;
+        }
+        int left = k;
+        int right = n;
+        int ans = 0;
+        while(left<=right){
+            int mid = (left+right)/2;
+            if(isPossible(mid,pre1)){
+                ans = mid;
+                left = mid+1;
+            }else{
+                right = mid-1;
+            }
+        }
+        left = k;
+        right = n;
+        int ans2 = 0;
+        while(left<=right){
+            int mid = (left+right)/2;
+            if(isPossible(mid,pre2)){
+                ans2 = mid;
+                left = mid+1;
+            }else{
+                right = mid-1;
+            }
+        }
+        return Math.max(ans,ans2);
+    }
+    public boolean isPossible(int mid, int[] pre ){
+        if(pre[mid-1]<=k) return true;
+        if(mid<n && pre[mid]<=k) return true;
+        for(int i=0;i+mid<n;i++){
+            if(pre[i+mid]-pre[i]<=k) return true;
+        }
+        return false;
+    }
+}

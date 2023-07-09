@@ -1,0 +1,17 @@
+class Solution {
+    public String sortSentence(String s) {
+        String[] ls = s.split(" ");
+        int n = ls.length;
+        String[] ansArray = new String[n];
+        for(String s1 : ls){
+            int n1 = s1.charAt(s1.length()-1) - '1';
+            ansArray[n1] = s1.substring(0,s1.length()-1);
+        }
+        String ans = "";
+        for(String s1 : ansArray){
+            ans += s1;
+            ans += " ";
+        }
+        return ans.substring(0,ans.length()-1);
+    }
+}

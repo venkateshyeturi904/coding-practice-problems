@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    Map<Integer,List<Integer>> map = new HashMap<>();
+    List<Integer> ans = new ArrayList<>();
+    Set<Integer> visited = new HashSet<>();
+    int k;
+    int tar;
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        this.k = k;
+        this.tar = target.val;
+        dfs(root);
+        dfs2(target.val,0);
+        return ans;
+    }
+    public void dfs2(int i, int level){
+        if(visited.contains(i)) return;
+        visited.add(i);
+        if(level==k){
+            ans.add(i);
+            return;
+        }
+        for(int link : map.get(i)){
+            if(link!=tar) dfs2(link,level+1);
+        }
+    }
+    public void dfs(TreeNode root){
+        if(root==null) return;
+        if(!map.containsKey(root.val)) map.put(root.val,new ArrayList<>());
+        if(root.left!=null){
+            map.get(root.val).add(root.left.val);
+            if(!map.containsKey(root.left.val)) map.put(root.left.val,new ArrayList<>(Arrays.asList(root.val)));
+            else map.get(root.left.val).add(root.val);
+            dfs(root.left);
+        }
+        if(root.right!=null){
+            map.get(root.val).add(root.right.val);
+            if(!map.containsKey(root.right.val)) map.put(root.right.val,new ArrayList<>(Arrays.asList(root.val)));
+            else map.get(root.right.val).add(root.val);
+            dfs(root.right);
+        }
+    }
+}

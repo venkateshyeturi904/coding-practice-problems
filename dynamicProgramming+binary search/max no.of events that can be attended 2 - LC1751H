@@ -1,0 +1,39 @@
+class Solution {
+    Integer[][] dp;
+    public int maxValue(int[][] events, int k) {
+        int n = events.length;
+        Arrays.sort(events,(a,b)->a[0]-b[0]);
+        dp = new Integer[n+1][k+1];
+        return dfs(0,k,events);
+    }
+    public int dfs(int i,int k, int[][] events){
+        if(k==0 || i==events.length) return 0;
+        if(dp[i][k]!=null) return dp[i][k];
+        int first = events[i][0];
+        int last = events[i][1];
+        int value = events[i][2];
+        int take = value;
+        int notTake = 0;
+
+        int left = i+1;
+        int right = events.length-1;
+        int findIndex = -1;
+
+        while(left<=right){
+            int mid = left + (right-left)/2;
+            int firstOfMid = events[mid][0];
+            if(firstOfMid>last){
+                findIndex = mid;
+                right = mid-1;
+            }else{
+                left = mid+1;
+            }
+        }
+        
+        if(findIndex!=-1) take = value + dfs(findIndex,k-1,events);
+        notTake = dfs(i+1,k,events);
+        
+        return dp[i][k] = Math.max(take,notTake);
+    }
+}
+

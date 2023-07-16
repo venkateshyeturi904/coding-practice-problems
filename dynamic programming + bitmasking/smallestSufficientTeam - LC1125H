@@ -1,0 +1,41 @@
+class Solution {
+    int[] res ;
+    int m;
+    int n;
+    List<List<Integer>> dp = new ArrayList<>();
+    List<Integer> peopleSkills = new ArrayList<>();
+    Map<String,Integer> skillsMap = new HashMap<>();
+    public int[] smallestSufficientTeam(String[] req_skills, List<List<String>> people) {
+        this.n = people.size();
+        this.m = req_skills.length;
+        for(int i=0;i<m;i++) skillsMap.put(req_skills[i],(1<<i));
+        for(int i=0;i<n;i++){
+            List<Integer> temp = new ArrayList<>();
+            for(int j=0;j<(1<<m);j++){
+                temp.add(-1);
+            }
+            dp.add(new ArrayList<>(temp));
+        }
+        for(int i=0;i<n;i++){
+            int mask = 0;
+            for(String s : people.get(i)) mask |= skillsMap.get(s);
+            peopleSkills.add(mask);
+        }
+        dfs(0,0,new ArrayList<>());
+        return res;
+    }
+    public void dfs(int i, int mask, List<Integer> countPeople){
+        if(mask==((1<<m)-1)){
+            if(res==null || countPeople.size()<res.length) res = countPeople.stream().mapToInt(j->j.intValue()).toArray();
+            if(i<n) if(dp.get(i).get(mask)==-1 || dp.get(i).get(mask)>countPeople.size()) dp.get(i).set(mask,countPeople.size());
+            return;
+        }
+        if(i==n) return;
+        if(dp.get(i).get(mask)!=-1 && countPeople.size()>=dp.get(i).get(mask)) return;
+        dfs(i+1,mask,countPeople);
+        countPeople.add(i);
+        dfs(i+1,mask|peopleSkills.get(i),countPeople);
+        countPeople.remove(countPeople.size()-1);
+        if(dp.get(i).get(mask)==-1 || dp.get(i).get(mask)>countPeople.size()) dp.get(i).set(mask,countPeople.size());
+    }
+}

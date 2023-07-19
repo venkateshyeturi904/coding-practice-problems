@@ -1,0 +1,39 @@
+/*
+
+Intuition
+[x,y] be the interval -> x be the first and y be the last.
+Just sort the intervals with the least x value first.
+maintain previousLast iteratively so that when we are at index i, we have to check if x coordinate of that index is greater than previousLast or not. If so, we just move to next index updating the previousLast value.
+
+But if the x coordinate of current index is less than prevLast value, then it will be lesser no.of removals if we remove the one with greater interval width ( Because more no.of future intervals may get accomodated inside that intervals so we will have to remove all those intervals so number of removals will be high)
+
+Complexity
+Time complexity: O(nlogn)O(nlogn)O(nlogn)
+Space complexity: O(n)O(n)O(n) 
+
+*/
+
+Code
+class Solution {
+    public int eraseOverlapIntervals(int[][] intervals) {
+        int n = intervals.length;
+        int ans = 0;
+        Arrays.sort(intervals,(a,b)->a[0]-b[0]);
+        int prevLast = intervals[0][1];
+        for(int i=1;i<n;i++){
+            int first = intervals[i][0];
+            int last = intervals[i][1];
+            if(first<prevLast){
+                if(last>prevLast){
+                    ans++;
+                }else{
+                    prevLast = last;
+                    ans++;
+                }
+            }else{
+                prevLast = last;
+            }
+        }
+        return ans;
+    }
+}

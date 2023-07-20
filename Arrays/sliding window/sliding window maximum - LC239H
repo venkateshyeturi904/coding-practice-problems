@@ -1,0 +1,37 @@
+Intuition
+Maintain the values with indices of first k elements in a priorityQueue.
+say n = nums length
+For each index i=1 to n-k, just add the element into the priorityQueue.
+Now, peek element will be the highest among all so far.
+
+If the index of peek element is within the distance of k from current index i, we can just add peek element into our answer arrya and move to next index.
+
+If index of peek element is not within the distance of k from current index, we can just pop out that element as it will no more be useful for us in next indices. Now we have to check next peek element if it is within distance of k. If not pop it again until we reach within distance k index.
+
+Complexity
+Time complexity: O(nlogn)O(nlogn)O(nlogn)
+Space complexity: O(n)O(n)O(n)
+Code
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        int[] ans = new int[n-k+1];
+        PriorityQueue<int[]> arr = new PriorityQueue<>((a,b)->a[0]==b[0]?b[1]-a[1]:b[0]-a[0]);
+        for(int i=0;i<k;i++){
+            arr.offer(new int[]{nums[i],i});
+        } 
+        ans[0] = arr.peek()[0];
+        for(int i=1;i+k<=n;i++){
+            int addIndex = i+k-1;
+            arr.offer(new int[]{nums[addIndex],addIndex});
+            int lastElement = arr.peek()[0];
+            int lastElementIndex = arr.peek()[1];
+            while(i>lastElementIndex){
+                arr.poll();
+                lastElementIndex = arr.peek()[1];
+            }
+            ans[i] = arr.peek()[0];
+        }
+        return ans;
+    }
+}

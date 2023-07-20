@@ -1,0 +1,59 @@
+/* 
+Intuition
+If previous is negative no matter what is the sign of current, we can just add into the list.
+If previous is positive, add the current into list if current is also positive.
+
+If previous is positive and current is negative, actual logic exists here .
+
+Compare the magnitudes of previous and current.
+If current magnitude is higher than previous, remove the previous from the list and add the current one into the list after checking the sign of previous of previous one.
+For this we can use just recursion kind of functionality to go back until we find a case that we can add current into the list.
+
+Complexity
+Time complexity: O(n)O(n)O(n)
+Space complexity: O(n)O(n)O(n) 
+*/
+Code: 
+class Solution {
+    int[] ast ;
+    public int[] asteroidCollision(int[] ast) {
+        this.ast = ast;
+        List<Integer> list = new ArrayList<>();
+        add(0,list);
+        int size = list.size();
+        int[] ans = new int[size];
+        for(int i=0;i<size;i++) ans[i] = list.get(i);
+        return ans;
+    }
+    public void add(int index, List<Integer> list){
+        if(index==ast.length) return;
+        if(list.size()==0){
+            list.add(ast[index]);
+            add(index+1,list);
+        }else{
+            int prev = list.get(list.size()-1);
+            int curr = ast[index];
+            int prevAbs = Math.abs(prev);
+            int currAbs = Math.abs(curr);
+            if(prev<0){
+                list.add(ast[index]);
+                add(index+1,list);
+            }else{
+                if(curr>0){
+                    list.add(ast[index]);
+                    add(index+1,list);
+                }else{
+                    if(prevAbs>currAbs){
+                        add(index+1,list);
+                    }else if(prevAbs<currAbs){
+                        list.remove(list.size()-1);
+                        add(index,list);
+                    }else{
+                        list.remove(list.size()-1);
+                        add(index+1,list);
+                    }
+                }
+            }
+        }
+    }
+}

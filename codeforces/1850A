@@ -1,0 +1,18 @@
+
+import java.util.*;
+import java.io.*;
+
+public class A {
+    public static void main(String[] args) throws IOException{
+        BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
+        int nt = Integer.parseInt(bReader.readLine());
+        while(nt-->0){
+            String[] inputArrayString = bReader.readLine().split(" ");
+            int a = Integer.parseInt(inputArrayString[0]);
+            int b = Integer.parseInt(inputArrayString[1]);
+            int c = Integer.parseInt(inputArrayString[2]);
+            if(a+b>=10 || b+c>=10 || a+c>=10) System.out.println("YES");
+            else System.out.println("NO");
+        }
+    }
+}

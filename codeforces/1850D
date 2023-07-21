@@ -1,0 +1,32 @@
+import java.util.*;
+import java.io.*;
+public class D {
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int nt = Integer.parseInt(br.readLine());
+        while(nt-->0){
+            String[] sa1 = br.readLine().split(" ");
+            int n = Integer.parseInt(sa1[0]);
+            int k = Integer.parseInt(sa1[1]);
+            String[] sa2 = br.readLine().split(" ");
+            int[] arr = new int[n];
+            for(int i=0;i<n;i++){
+                arr[i] = Integer.parseInt(sa2[i]);
+            }
+            int ans = Integer.MAX_VALUE;
+            Arrays.sort(arr);
+            for(int i=0;i<n;){
+                int count = 0;
+                int curr = arr[i];
+                while(arr[i]<=curr+k){
+                    curr = arr[i];
+                    count++;
+                    i++;
+                    if(i==n) break;
+                }
+                ans = Math.min(ans,n-count);
+            }
+            System.out.println(ans);
+        }
+    }
+}

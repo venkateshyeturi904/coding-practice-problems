@@ -1,0 +1,21 @@
+class Solution {
+    int n;
+    Double[][][] dp;
+    public double knightProbability(int n, int k, int row, int column) {
+        this.n = n;
+        dp = new Double[n+1][n+1][k+1];
+        double count = dfs(row,column,k);
+        System.out.println(count);
+        return count/Math.pow(8,k);
+    }
+    public double dfs(int i, int j, int k){
+        if(i>=n || j>=n || i<0 || j<0){
+            return 0;
+        }
+        if(k==0) return 1;
+        if(dp[i][j][k]!=null) return dp[i][j][k];
+        double count = dfs(i+2,j+1,k-1)+dfs(i+2,j-1,k-1)+dfs(i-2,j+1,k-1)+dfs(i-2,j-1,k-1)+
+        dfs(i+1,j+2,k-1)+dfs(i-1,j+2,k-1)+dfs(i+1,j-2,k-1)+dfs(i-1,j-2,k-1);
+        return dp[i][j][k]=count;
+    }
+}

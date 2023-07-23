@@ -1,0 +1,13 @@
+class Solution {
+    public boolean isGood(int[] nums) {
+        int n = nums.length;
+        boolean twiceFound = false;
+        Set<Integer> set = new HashSet<>();
+        for(int i : nums){
+            if(i==n-1  && set.contains(n-1)) twiceFound = true;
+            set.add(i);
+        }
+        for(int i=1;i<=n-1;i++) if(!set.contains(i)) return false;
+        return true&&twiceFound;
+    }
+}

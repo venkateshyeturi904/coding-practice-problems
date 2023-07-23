@@ -1,0 +1,37 @@
+
+class Solution {
+    int[] nums;
+    int x;
+    Long[][] dp;
+    public long maxScore(int[] nums, int x) {
+        int n = nums.length;
+        this.nums = nums;
+        this.x = x;
+        dp = new Long[n+1][2];
+        return nums[0]+dfs(1,nums[0]%2==0?1:0);
+    }
+    public long dfs(int i, int prevEven){
+        if(i==nums.length) return 0;
+        if(dp[i][prevEven]!=null) return dp[i][prevEven];
+        long take = 0;
+        long notTake = 0;
+        if(prevEven==1){
+            if(nums[i]%2==0){
+                take = nums[i] + dfs(i+1,1);
+                notTake = dfs(i+1,prevEven);
+            }else{
+                take = nums[i] - x + dfs(i+1,0);
+                notTake = dfs(i+1,1);
+            }
+        }else{
+            if(nums[i]%2==0){
+                take = nums[i] - x + dfs(i+1,1);
+                notTake = dfs(i+1,0);
+            }else{
+                take = nums[i] + dfs(i+1,0);
+                notTake = dfs(i+1,prevEven);
+            }
+        }
+        return dp[i][prevEven]=Math.max(take,notTake);
+    }
+}

@@ -1,0 +1,51 @@
+n --> size of usageLimits
+Use binary search to find the maxPossibleNoOfGroups.
+Left limit will be 1 and right will be the n.
+Maintain the prefix sum of sorted usageLimits array so that we can know how many total no.of numbers available till particular index.
+
+Approach
+For a given mid value (no.of groups), to find its possible to form mid no.of groups, we need to find first of all whether (mid)(mid+1)/2 no.of numbers are available or not. Because if we increment one for each successive group it will come up with this formula.
+Its not enough to check only for mid value rather we need to check for mid-1, mid-2.. (mid no.of times) because if mid = 5, we should be able to form 4 groups, 3 groups ... .
+
+Complexity
+Time complexity: O(nlogn)O(nlogn)O(nlogn)
+Space complexity: O(n)O(n)O(n)
+Code
+class Solution {
+    int totalSum = 0;
+    long[] pre;
+    int len;
+    List<Integer> usageLimits;
+    public int maxIncreasingGroups(List<Integer> usageLimits) {
+        this.usageLimits = usageLimits;
+        int n = usageLimits.size();
+        len = usageLimits.size();
+        int left = 1;
+        int right = n;
+        int ans = 0;
+        Collections.sort(usageLimits);
+        pre = new long[n+1];
+        pre[0] = usageLimits.get(0);
+        for(int i=1;i<n;i++) pre[i] = pre[i-1]+usageLimits.get(i);
+        while(left<=right){
+            int mid = (left+right)/2;
+            if(isPossible(mid)){
+                ans = mid;
+                left = mid+1;
+            }else{
+                right = mid-1;
+            }
+        }
+        return ans;
+    }
+    public boolean isPossible(int mid){
+        int currIndex = 0;
+        for(int i=len-1;i>=0;i--){
+            if(mid==0) return true;
+            long s = (long)mid*(long)(mid+1)/2;
+            if(s>pre[i]) return false;
+            mid--;
+        }
+        return true;
+    }
+}

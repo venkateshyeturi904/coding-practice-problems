@@ -1,0 +1,22 @@
+class Solution {
+    Map<Integer,List<TreeNode>> map = new HashMap<>();
+    public List<TreeNode> allPossibleFBT(int n) {
+        if(map.containsKey(n)) return map.get(n);
+        List<TreeNode> list = new ArrayList<>();
+        if(n==1){
+            list.add(new TreeNode(0));
+            return list;
+        }
+        for(int i=1;i<n;i+=2){
+            for(TreeNode r1 : allPossibleFBT(i)){
+                for(TreeNode r2 : allPossibleFBT(n-i-1)){
+                    TreeNode root = new TreeNode(0,r1,r2);
+                    list.add(root);
+                }
+            }
+        }
+        map.put(n,new ArrayList<>(list));
+        return list;
+    }
+}
+

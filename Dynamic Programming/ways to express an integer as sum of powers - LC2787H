@@ -1,0 +1,27 @@
+class Solution {
+    int mod = 1000000007;
+    int left = 1;
+    int right = 0;
+    int n ;
+    int x;
+    Integer[][] dp;
+    public int numberOfWays(int n, int x) {
+        this.n = n;
+        this.x = x;
+        dp = new Integer[n+1][n+1];
+        if(x==1) right = n;
+        else right = (int)(Math.exp(Math.log(n)/x))+1;
+        int ans = dfs(1, 0);
+        return ans%mod;
+    }
+    public int dfs(int i, int sum){
+        if(sum==n){
+            return 1;
+        }else if(sum>n) return 0;
+        if(i>right || i>n) return 0;
+        if(dp[i][sum]!=null) return dp[i][sum];
+        int take = dfs(i+1,sum+(int)Math.pow(i,x));
+        int notTake = dfs(i+1,sum);
+        return dp[i][sum] = take%mod + notTake%mod;
+    }
+}

@@ -1,0 +1,29 @@
+
+class Solution {
+    int n;
+    List<TreeNode>[][] dp ;
+    public List<TreeNode> generateTrees(int n) {
+        this.n = n;
+        dp = new ArrayList[n+1][n+1];
+        return dfs(1,n);
+    }
+    public List<TreeNode> dfs(int leftLimit, int rightLimit){
+        List<TreeNode> list = new ArrayList<>();
+        if(leftLimit>rightLimit){
+            list.add(null);
+            return list;
+        }
+        if(dp[leftLimit][rightLimit]!=null) return dp[leftLimit][rightLimit];
+        for(int i=leftLimit;i<=rightLimit;i++){
+            List<TreeNode> leftList = dfs(leftLimit,i-1);
+            List<TreeNode> rightList = dfs(i+1,rightLimit);
+            for(TreeNode le : leftList){
+                for(TreeNode ri : rightList){
+                    TreeNode node = new TreeNode(i,le,ri);
+                    list.add(node);
+                }
+            }
+        }
+        return dp[leftLimit][rightLimit]=list;
+    }
+}

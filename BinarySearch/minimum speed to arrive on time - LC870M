@@ -1,0 +1,30 @@
+class Solution {
+    public int minSpeedOnTime(int[] dist, double hour) {
+        int left = 1;
+        int right = 10000000;
+        int ans = -1;
+        while(left<=right){
+            int mid = left + (right-left)/2;
+            double timeCount = 0;
+            int i=0;
+            for(i = 0;i<dist.length-1;i++){
+                if(dist[i]%mid==0){
+                    timeCount += (dist[i]/mid);
+                }else{
+                    timeCount += (dist[i]/mid);
+                    timeCount += 1;
+                }
+            }
+            timeCount += (double)dist[dist.length-1]/mid;
+            System.out.println(timeCount+" "+mid);
+            if(timeCount>hour){
+                left = mid + 1;
+            }else{
+                ans=mid;
+                right = mid - 1;
+            }
+        }
+        return ans;
+    }
+}
+

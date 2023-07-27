@@ -1,0 +1,49 @@
+/*Intuition
+First find the odd length palindromes with ith character as the center element.
+To find the no.of such palindromes we just need to check the characters on either sides and move on till both the characters are equal.
+
+Now find the even length palindromes with ith index character will be the right part and (i-1)th character will be the left part of center two characters of palindromes which should be equal .
+
+Complexity
+Time complexity: O(n2)O(n^2)O(n 
+2
+ )
+Space complexity: (n)(n)(n)
+Code
+*/
+class Solution {
+    public int countSubstrings(String s) {
+        int ans = 0;
+        int n = s.length();
+        int[] dp = new int[n+1];
+        // Even : 
+        for(int i=n-1;i>=0;i--){
+            int right = i+1;
+            int left = i-1;
+            ans++;
+            while(left>=0 && right<n){
+                if(s.charAt(left)==s.charAt(right)){
+                    left--;
+                    right++;
+                    ans++;
+                }else{
+                    break;
+                }
+            }
+        }
+        for(int i=n-1;i>=0;i--){
+            int right = i;
+            int left = i-1;
+            while(left>=0 && right<n){
+                if(s.charAt(left)==s.charAt(right)){
+                    left--;
+                    right++;
+                    ans++;
+                }else{
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+}

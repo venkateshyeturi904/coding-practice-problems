@@ -1,0 +1,42 @@
+/*
+
+Intuition
+Player 1's turn : Collect either the first or last and then subtract the next player's score to get the first player's score.
+Ultimately we will obtain player 1's score and check if its positive or not because we are calculating the relative score of player 1 compared to player 2. Not the absolute score.
+Hence we need to check if the relative score of player 1 is positive or negative.
+
+Complexity
+Time complexity: O(n2)O(n^2)O(n 
+2
+ )
+Because if we use pure recursion, then it will be 2^n but we are using DP here, so overlapping subproblems will not be recalculated. Now the complexity will be the no.of combincations of i and j i.e O(n^2)
+Space complexity: O(n2)O(n^2)O(n 
+2
+ )
+Size of the DP will be n^2 and size of system stack will be O(n) as the maximum depth of recursion here will be the length of the array.
+Overall space complexity will be O(n^2)
+Code
+*/
+class Solution {
+    Integer[][][] dp;
+    public boolean PredictTheWinner(int[] nums) {
+        int n = nums.length;
+        dp = new Integer[n+1][n+1][3];
+        int score1 = dfs(0,n-1,nums,1);
+        System.out.println(score1);
+        return score1>=0;
+    }
+    public int dfs(int i, int j, int[] nums, int player){
+        if(i==j) return nums[i];
+        if(dp[i][j][player]!=null) return dp[i][j][player];
+        if(player==1){
+            int first = nums[i] - dfs(i+1,j,nums,2);
+            int sec = nums[j] - dfs(i,j-1,nums,2);
+            return dp[i][j][player]=Math.max(first,sec);
+        }else{
+            int first = nums[i] - dfs(i+1,j,nums,1);
+            int sec = nums[j] - dfs(i,j-1,nums,1);
+            return dp[i][j][player]=Math.max(first,sec);
+        }
+    }
+}

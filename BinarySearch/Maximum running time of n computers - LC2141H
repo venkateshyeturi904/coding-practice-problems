@@ -1,0 +1,56 @@
+/*
+Intuition
+Time of operation:
+Minimum = 0 ( when array size is less but no.of computers are more)
+Maximum = sum(batteries) / n
+Where we are able to utilize all the batteries completely.
+
+For this we can perform binary search.
+
+For a given mid no.of hours, we have to find its possible to run n computers or not. If its possible we need to find some more possible no.of hours otherwise we need to decrement the mid.
+
+Approach
+Say we already have sorted times. ( Intuitive )
+For a given mid, to check if its possible to run n computers simultaneously :
+We can just go on adding the timeCount till it reaches mid value which means one computer can be run so far. Then we decrement the timeCount with mid value which means passing the extra time to the next computer.
+For each observation of timeCount >= mid, we decrement n indicating that one computer is already done running for mid amount of time.
+We return true when n==0.
+Lastly we can just return false as we didnt reach n==0 yet.
+
+Complexity
+Time complexity: O(NlogN)O(NlogN)O(NlogN)
+Space complexity: O(n)O(n)O(n)
+Code
+*/
+
+
+class Solution {
+    public long maxRunTime(int n, int[] batteries) {
+        long ans = 0;
+        long left = 1;
+        long right = Arrays.stream(batteries).mapToLong(i->i).sum()/n;
+        Arrays.sort(batteries);
+        while(left<=right){
+            long mid = left + (right-left)/2;
+            if(isPossible(mid,batteries,n)){
+                ans = mid;
+                left = mid+1;
+            }else{
+                right = mid-1;
+            }
+        }
+        return ans;
+    }
+    public boolean isPossible(long mid, int[] batteries, int n){
+        long countTime = 0;
+        for(int i : batteries){
+            countTime += i;
+            if(countTime>=mid){
+                countTime -= mid;
+                n--;
+            }
+            if(n==0) return true;
+        }
+        return false;
+    }
+}

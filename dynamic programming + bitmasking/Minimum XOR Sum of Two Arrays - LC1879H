@@ -1,0 +1,51 @@
+/* 
+BitMask DP || Intuitive || O(n*2^n)
+venky_thecoder
+Programming Skills I
+13
+0
+a few seconds ago
+Java
+Intuition
+For each element in nums1, try all the possible ( unvisited ) elements of nums2 and go on for the next index till the end of nums1 array.
+To maintain the visited elements of nums2, use a Set.
+This gives the answer but leads to TLE as time complexity will be n!.
+If we try to use DP, how to store a set as an index ? Not possible hence we can go for bitmasking.
+Optimized appraoch :
+Using a bitmask to store all the visited elements of nums2.
+( i.e Put 1 at jth position if jth element of nums2 is currently used. )
+
+Complexity
+Time complexity: O(n∗2n)O( n * 2^ n)O(n∗2 
+n
+ )
+Because the no.of iterations is nothing but the no.of combinations i.e the size of dp table.
+Space complexity: O(n∗2n)O(n*2^n)O(n∗2 
+n
+ )
+Code
+*/
+class Solution {
+    int[] nums1;
+    int[] nums2;
+    Integer[][] dp;
+    public int minimumXORSum(int[] nums1, int[] nums2) {
+        int n = nums1.length;
+        this.nums1 = nums1;
+        this.nums2 = nums2;
+        dp = new Integer[n+1][1<<(n+1)];
+        return dfs(0,0);
+    }
+    public int dfs(int i, int mask){
+        if(i==nums1.length) return 0;
+        if(dp[i][mask]!=null) return dp[i][mask];
+        int total = Integer.MAX_VALUE;
+        for(int j=0;j<nums1.length;j++){
+            if(((1<<j) & mask) == 0){
+                int curr = (nums1[i] ^ nums2[j]) + dfs(i+1,((1<<j) | mask));
+                total = Math.min(total,curr);
+            }
+        }
+        return dp[i][mask]=total;
+    }
+}

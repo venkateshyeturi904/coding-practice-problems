@@ -1,0 +1,81 @@
+/*
+Intuition
+Find out the possiblities for each string at each index and make them union and find the length.
+Recursively go through all the combinations possible.
+
+Complexity
+Time complexity:
+Space complexity:
+Code
+*/
+class Solution {
+    List<String> list = new ArrayList<>();
+    String[] strs = new String[3];
+    public String minimumString(String a, String b, String c) {
+        strs[0] = a;
+        strs[1] = b;
+        strs[2] = c;
+        Arrays.sort(strs);
+        dfs(0,new HashSet<>(),"");
+        return list.get(0);
+    }
+    public void dfs(int i, Set<Integer> visited, String curr){
+        if(i==3){
+            if(list.size()==0){
+                list.add(curr);
+            }else{
+                String prevAns = list.get(0);
+                if(prevAns.length()<curr.length()){
+                    
+                }else if(prevAns.length()>curr.length()){
+                    list.remove(0);
+                    list.add(curr);
+                }else{
+                    if(aLessThanB(curr,prevAns)){
+                        list.remove(0);
+                        list.add(curr);
+                    }
+                }
+            }
+            return;
+        }
+        for(int j=0;j<3;j++){
+            if(visited.contains(j)) continue;
+            visited.add(j);
+            String temp = curr;
+            curr = add(curr,strs[j]);
+            dfs(i+1,visited,curr);
+            visited.remove(j);
+            curr = String.valueOf(temp);
+        }
+    }
+    public boolean aLessThanB(String a, String b){
+        int i=0;
+        while(a.charAt(i)==b.charAt(i)){
+            i++;
+            if(i==a.length() || i==b.length()){
+                if(i==a.length() && i==b.length()) return true;
+                else if(i==a.length()) return true;
+                else return false;
+            }
+        }
+        boolean found = a.charAt(i)<b.charAt(i);
+        // System.out.println(a+" "+b+" "+found);
+        return found;
+    }
+    public String add(String a, String b){
+        if(a.contains(b)) return a;
+        int na = a.length();
+        int nb = b.length();
+        int left = 1;
+        int right = Math.min(a.length(),b.length());
+        for(int i = right;i>=left;i--){
+            String sub1 = a.substring(na-i,na);
+            String sub2 = b.substring(0,i);
+            if(sub1.equals(sub2)){
+                return a+""+b.substring(i,nb);
+            }
+        }
+        return a+""+b;
+    }
+}

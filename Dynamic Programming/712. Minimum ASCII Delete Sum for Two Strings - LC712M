@@ -1,0 +1,23 @@
+class Solution {
+    String s1;
+    String s2;
+    Integer[][] dp;
+    public int minimumDeleteSum(String s1, String s2) {
+        this.s1 = s1;
+        this.s2 = s2;
+        dp = new Integer[s1.length()+1][s2.length()+1];
+        return dfs(0,0);
+    }
+    public int dfs(int i, int j){
+        if(i==s1.length() && j==s2.length()) return 0;
+        else if(i==s1.length()) return s2.charAt(j) + dfs(i,j+1);
+        else if(j==s2.length()) return s1.charAt(i) + dfs(i+1,j);
+        if(dp[i][j]!=null) return dp[i][j];
+        int same = Integer.MAX_VALUE, notSame1=0, notSame2 = 0;
+        if(s1.charAt(i)==s2.charAt(j)) same = dfs(i+1,j+1);
+        notSame1 = s1.charAt(i) + dfs(i+1,j);
+        notSame2 = s2.charAt(j) + dfs(i,j+1);
+        return dp[i][j] = Math.min(same,Math.min(notSame1,notSame2));
+    }
+}
+

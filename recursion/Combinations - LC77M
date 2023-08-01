@@ -1,0 +1,30 @@
+/*
+Complexity
+Time complexity: O(2n)O(2^n)O(2 
+n
+ )
+Space complexity: O(k∗2n)O(k*2^n)O(k∗2 
+n
+ )
+Code
+*/
+class Solution {
+    List<List<Integer>> ans = new ArrayList<>();
+    int n ;
+    public List<List<Integer>> combine(int n, int k) {
+        this.n = n;
+        dfs(1,k,new ArrayList<>());
+        return ans;
+    }
+    public void dfs(int i, int k, List<Integer> list){
+        if(k==0){
+            ans.add(new ArrayList<>(list));
+            return;
+        }
+        for(int j=i;j<=n;j++){
+            list.add(j);
+            dfs(j+1,k-1,list);
+            list.remove(list.size()-1);
+        }
+    }
+}

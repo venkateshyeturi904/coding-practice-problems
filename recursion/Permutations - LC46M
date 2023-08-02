@@ -1,0 +1,22 @@
+class Solution {
+    int[] nums;
+    List<List<Integer>> ans = new ArrayList<>();
+    public List<List<Integer>> permute(int[] nums) {
+        this.nums = nums;
+        dfs(0,new ArrayList<>());
+        return ans;
+    }
+    public void dfs(int mask, List<Integer> list){
+        if(mask==((1<<nums.length)-1)){
+            ans.add(new ArrayList<>(list));
+            return;
+        }
+        for(int j=0;j<nums.length;j++){
+            if((mask & (1<<j))==0){
+                list.add(nums[j]);
+                dfs((mask | (1<<j)),list);
+                list.remove(list.size()-1);
+            }
+        }
+    }
+}

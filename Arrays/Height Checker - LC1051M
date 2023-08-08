@@ -1,0 +1,32 @@
+/* 
+Intuition
+Save the frequency of each element in an array at index equal to the value of the element. ( Complexity is similar to that of hashing but its not hashing ) Its simply of taking a vary large space array and keeping the element frequency at its index.
+
+So the next time we will just go through all the elements in the frequency array i.e from index 0 to index max(heights) and keep on adding each element frequency times in answer array and then just comparing the result with the original array gives the result.
+
+Complexity
+Time complexity: O(max(max(heights),len(heights)))O( max ( max(heights), len(heights) ) )O(max(max(heights),len(heights)))
+Space complexity: O(max(heights))O(max(heights))O(max(heights))
+Code
+*/
+class Solution {
+    public int heightChecker(int[] heights) {
+        int n = heights.length;
+        int count = 0;
+        int max = Arrays.stream(heights).max().getAsInt();
+        int[] save = new int[max+1];
+        for(int i=0;i<n;i++){
+            save[heights[i]]++;
+        }
+        int[] arr =new int[n];
+        int k = 0;
+        for(int i=0;i<max+1;i++){
+            int j = save[i];
+            while(j-->0) arr[k++] = i;
+        }
+        for(int i=0;i<n;i++){
+            if(arr[i]!=heights[i]) count++;
+        }
+        return count;
+    }
+}

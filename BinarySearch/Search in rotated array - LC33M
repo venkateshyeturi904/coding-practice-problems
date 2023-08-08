@@ -1,0 +1,37 @@
+/*
+Intuition
+There will be two increasing parts in the array. The dividing point is the one from where increasing of first part stops and increasing of 2nd array starts. So first we will try to get into the desired part and then continue Binary search .
+(Because for getting into that part also, binary search is the way :) )
+
+Getting into that desired part can be achieved by comparing left and mid or mid and right .
+For every epoch, we will just see we are in 1st part or 2nd part. After knowing the part, we will see if the target element will exists in that part by comparing thetarget<nums[right] and target>nums[left]. If so, we will omit the remaining part by just modifying the left or right value with mid.
+
+Complexity
+Time complexity: O(n)O(n)O(n)
+Space complexity: O(1)O(1)O(1)
+Code
+*/
+class Solution {
+    public int search(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length-1;
+        while(left<=right){
+            int mid = (left+right)/2;
+            if(nums[mid]==target) return mid;
+            if(nums[left]<=nums[mid]){
+                if(nums[left]<=target && target<=nums[mid]){
+                    right = mid-1;
+                }else{
+                    left = mid+1;
+                }
+            }else{
+                if(nums[mid]<=target && target<=nums[right]){
+                    left = mid+1;
+                }else{
+                    right = mid-1;
+                }
+            }
+        } 
+        return -1;
+    }
+}

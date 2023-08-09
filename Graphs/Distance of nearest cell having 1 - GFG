@@ -1,0 +1,32 @@
+
+class Solution
+{
+
+    public int[][] nearest(int[][] grid)
+    {
+        Queue<int[]> q = new LinkedList<>();
+        int n = grid.length;
+        int m = grid[0].length;
+        int[][] ans = new int[n][m];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==1) q.offer(new int[]{i,j,0});
+            }
+        }
+        int[][] dir = {{1,0},{0,1},{-1,0},{0,-1}};
+        while(!q.isEmpty()){
+            int[] curr = q.poll();
+            int i = curr[0];
+            int j = curr[1];
+            int dist = curr[2];
+            for(int k=0;k<4;k++){
+                int inew = i+dir[k][0];
+                int jnew = j+dir[k][1];
+                if(inew<0 || jnew<0 || inew==n || jnew==m || ans[inew][jnew]>0 || grid[inew][jnew]==1 ) continue;
+                ans[inew][jnew] = dist+1;
+                q.offer(new int[]{inew, jnew, dist+1});
+            }
+        }
+        return ans;
+    }
+}

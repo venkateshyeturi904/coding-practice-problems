@@ -1,0 +1,35 @@
+/*
+Intuition
+Just start from all the nodes and try to explore all the unvisited nodes carefully marking them when visited.
+Increase the count for each start of unvisited node thats it.
+
+Complexity
+Time complexity: O(n)
+Space complexity: O(n)
+Code
+*/
+class Solution {
+    public int findCircleNum(int[][] isConn) {
+        Map<Integer,List<Integer>> map = new HashMap<>();
+        int ans = 0;
+        boolean[] visited = new boolean[isConn.length];
+        for(int i=0;i<isConn.length;i++) map.put(i,new ArrayList<>());
+        for(int i=0;i<isConn.length;i++){
+            for(int j=0;j<isConn[0].length;j++){
+                if(isConn[i][j]==1) map.get(i).add(j);
+            }
+        }
+        for(int i=0;i<isConn.length;i++){
+            if(!visited[i]){
+                ans++;
+                dfs(i,visited,map);
+            }
+        }
+        return ans;
+    }
+    public void dfs(int i, boolean[] visited, Map<Integer,List<Integer>> map){
+        visited[i]=true;
+        for(int link : map.get(i)){
+            if(!visited[link]) dfs(link,visited,map);
+        }
+    }

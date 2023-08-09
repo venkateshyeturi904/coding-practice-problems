@@ -1,0 +1,41 @@
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        int ans = 0;
+        Queue<int[]> q = new LinkedList<>();
+        int n = grid.length;
+        int m = grid[0].length;
+        int[][] dir = {{0,1},{1,0},{0,-1},{-1,0}};
+        boolean[][] visited = new boolean[n][m];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==2){
+                    q.offer( new int[]{i,j});
+                    visited[i][j] = true;
+                }
+            }   
+        }
+        while(!q.isEmpty()){
+            int size = q.size();
+            boolean found = false;
+            while(size-->0){
+                int[] curr = q.poll();
+                int i = curr[0];
+                int j = curr[1];
+                for(int k=0;k<4;k++){
+                    int inew = i+dir[k][0];
+                    int jnew = j+dir[k][1];
+                    if(inew<0 || jnew<0 || inew==n || jnew==m || grid[inew][jnew]==0 || visited[inew][jnew]) continue;
+                    found = true;
+                    grid[inew][jnew] = 2;
+                    visited[inew][jnew] = true;
+                    q.offer(new int[]{inew, jnew});
+                }
+            }
+            if(found) ans++;
+        }
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++) if(grid[i][j]==1) return -1;
+        }
+        return ans;
+    }
+}

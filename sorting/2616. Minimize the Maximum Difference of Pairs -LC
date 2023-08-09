@@ -1,0 +1,51 @@
+/*
+Intuition
+Smallest possible value of maximum of difference among p pairs to be found.
+
+Main logic :
+If we are at index i, we can check nums[i+1]-nums[i] value and if it is not satisfactory, we can check nums[i+2]-nums[i+1] . As out of these two, only one can be selected ( to avoid duplicate selections ) we can just check first one and then simply go for i+=2 otherwise i+=1 as the 2nd step will be taken care in the next iteration because of i+=1.
+
+Approach
+Just apply binary search between two extreme possibilities i.e 0 and max(nums) - min(nums). For every mid value, check if it is possible to form p pairs with mid as maximum difference among all of the selected ones.
+
+Complexity
+Time complexity:O(nlogm)O(nlogm)O(nlogm)
+Space complexity:O(1)
+Code
+*/
+class Solution {
+    int[] nums;
+    int p;
+    int n;
+    public int minimizeMax(int[] nums, int p) {
+        this.nums = nums;
+        this.p = p;
+        Arrays.sort(nums);
+        int ans = -1;
+        this.n = nums.length;
+        int left = 0;
+        int right = nums[n-1] - nums[0];
+        while(left<=right){
+            int mid = (left+right)/2;
+            if(isPossible(mid)){
+                ans = mid;
+                right = mid-1;
+            }else{
+                left = mid+1;
+            }
+        }
+        return ans;
+    }
+    public boolean isPossible(int mid){
+        int count = 0;
+        for(int i=0;i<n-1 && count<p;){
+            if(nums[i+1]-nums[i]<=mid){
+                i+=2;
+                count++;
+            }else{
+                i+=1;
+            }
+        }
+        return count>=p;
+    }
+}

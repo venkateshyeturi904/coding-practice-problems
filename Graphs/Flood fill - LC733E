@@ -1,0 +1,26 @@
+class Solution {
+    int n,m;
+    int[][] image;
+    int sr, sc, color;
+    int save ;
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        this.n = image.length;
+        this.m = image[0].length;
+        this.image = image;
+        this.sr = sr;
+        this.sc = sc;
+        this.color = color;
+        this.save = image[sr][sc];
+        dfs(sr,sc,new boolean[n][m]);
+        return image;
+    }
+    public void dfs(int i, int j, boolean[][] visited){
+        if(i<0 || j<0 || i==n || j==m || visited[i][j] || save!=image[i][j]) return;
+        visited[i][j] = true;
+        image[i][j] = color;
+        int[][] dir = {{0,1},{1,0},{0,-1},{-1,0}};
+        for(int k=0;k<4;k++){
+            dfs(i+dir[k][0] , j+dir[k][1], visited);
+        }
+    }
+}

@@ -1,0 +1,33 @@
+class Solution {
+    int[] parent;
+    int[] size;
+    public int[] findRedundantConnection(int[][] edges) {
+        int n = edges.length;
+        this.parent = new int[n+1];
+        this.size = new int[n+1];
+        for(int i=1;i<=n;i++){
+            parent[i] = i;
+            size[i] = 1;
+        }
+        for(int[] e : edges){
+            if(findParent(e[0])==findParent(e[1])) return e;
+            union(e[0], e[1]);
+        }
+        return new int[]{0,0};
+    }
+    public void union(int i, int j){
+        int ip = findParent(i);
+        int jp = findParent(j);
+        if(size[ip]>size[jp]){
+            size[ip]++;
+            parent[jp] = ip;
+        }else{
+            size[jp]++;
+            parent[ip] = jp;
+        }
+    }
+    public int findParent(int i){
+        if(parent[i]==i) return i;
+        return findParent(parent[i]);
+    }
+}

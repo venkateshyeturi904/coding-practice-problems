@@ -1,0 +1,28 @@
+
+class Solution {
+    Set<Integer> visited = new HashSet<>();
+    ArrayList<ArrayList<Integer>> map;
+    Map<Integer,Boolean> dp = new HashMap<>();
+    public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
+        this.map = adj;
+        for(int i=0;i<V;i++){
+            if(visited.contains(i)) continue;
+            if(dfs(i,new HashSet<>())) return true;
+        }
+        return false;
+    }
+    public boolean dfs(int i, Set<Integer> updateVisited){
+        if(updateVisited.contains(i)) return true;
+        if(dp.containsKey(i)) return dp.get(i);
+        updateVisited.add(i);
+        visited.add(i);
+        boolean check = false;
+        for(int link : map.get(i)){
+            
+            check = check || dfs(link, updateVisited);
+        }
+        updateVisited.remove(i);
+        dp.put(i,check);
+        return check;
+    }
+}

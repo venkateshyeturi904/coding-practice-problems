@@ -1,0 +1,36 @@
+/*
+
+Save the shape of all islands in a HashSet and return the count of set. But how to save the shape. Just the relative difference of each index of island w.r.t to starting index of island. 
+
+*/
+
+class Solution {
+    int n, m;
+    int[][] grid;
+    boolean[][] visited;
+    int[][] dir = {{0,1}, {1,0}, {-1,0},{0,-1}};
+    Set<List<String>> set = new HashSet<>();
+    int countDistinctIslands(int[][] grid) {
+        this.n = grid.length;
+        this.m = grid[0].length;
+        this.grid = grid;
+        visited = new boolean[n][m];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(visited[i][j] || grid[i][j]==0) continue;
+                List<String> curr = new ArrayList<>();
+                dfs(i,j,i,j,curr);
+                set.add(curr);
+            }
+        }
+        return set.size();
+    }
+    public void dfs(int i, int j, int startI, int startJ, List<String> list){
+        if(i<0 || j<0 || i==n || j==m || grid[i][j]==0 || visited[i][j]) return;
+        visited[i][j] = true;
+        list.add(String.valueOf(i-startI)+" "+String.valueOf(j-startJ));
+        for(int k=0;k<4;k++){
+            dfs(i+dir[k][0], j+dir[k][1], startI, startJ, list);
+        }
+    }
+}

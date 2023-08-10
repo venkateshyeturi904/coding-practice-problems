@@ -1,0 +1,42 @@
+/*
+Intuition
+Start from the ends of matrix and convert all the appeared ones to zeros as they will not correspond to enclaves.
+
+Complexity
+Time complexity:O(m∗n)O(m*n)O(m∗n)
+Space complexity: O(1)O(1)O(1)
+Code
+*/
+class Solution {
+    public int numEnclaves(int[][] grid) {
+        int count = 0;
+        Queue<int[]> q = new LinkedList<>();
+        int n = grid.length;   
+        int m = grid[0].length;
+        for(int i=0;i<n;i++){
+            if(grid[i][0]==1) q.offer(new int[]{i,0});
+            if(grid[i][m-1]==1) q.offer(new int[]{i,m-1});
+        }
+        for(int j=0;j<m;j++){
+            if(grid[0][j]==1) q.offer(new int[]{0,j});
+            if(grid[n-1][j]==1) q.offer(new int[]{n-1,j});
+        }
+        int[][] dir = {{0,1},{1,0},{-1,0},{0,-1}};
+        while(!q.isEmpty()){
+            int[] curr = q.poll();
+            for(int k=0;k<4;k++){
+                int in = curr[0] + dir[k][0];
+                int jn = curr[1] + dir[k][1];
+                if(in<0 || jn<0 || in==n || jn==m || grid[in][jn]==0) continue;
+                grid[in][jn] = 0;
+                q.offer(new int[]{in,jn});
+            }
+        }
+        for(int i=1;i<n-1;i++){
+            for(int j=1;j<m-1;j++){
+                if(grid[i][j]==1) count++;
+            }
+        }
+        return count;
+    }
+}

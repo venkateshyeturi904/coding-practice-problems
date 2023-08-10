@@ -1,0 +1,33 @@
+/*
+Just perform DFS and add the nodes in the list from end to start order . 
+
+*/
+
+class Solution
+{   
+    int[] ans;
+    ArrayList<ArrayList<Integer>> map;
+    Set<Integer> visited = new HashSet<>();
+    List<Integer> ansList = new ArrayList<>();
+    //Function to return list containing vertices in Topological order. 
+    public int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
+    {
+        this.ans = new int[V];
+        this.map = adj;
+        for(int i=0;i<V;i++){
+            dfs(i);
+        }
+        for(int i=0;i<V;i++){
+            ans[i] = ansList.get(V-1-i);
+        }
+        return ans;
+    }
+    public void dfs(int i){
+        if(visited.contains(i)) return;
+        visited.add(i);
+        for(int link : map.get(i)){
+            dfs(link);
+        }
+        ansList.add(i);
+    }   
+}

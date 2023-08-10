@@ -1,0 +1,59 @@
+/*
+Intuition
+Logic is : If there is a cycle, before ending a path (that means before returning back from some node) a visited node will be appeared again.
+
+That means, if there is cycle for 1,2,3 nodes, 4,5..are connected to 2 (say) . Now, while perfoming dfs to all the links of 2, with the first link (3)'s itself we will get back to already visited node.
+
+so to tackle this, we can use updateVisited array seperately which maintains true if visited and going through it still. And when comes back by backtracking we will make it false again.
+
+Then,
+`
+
+         1 -> 2 -> 3
+              |    |
+              v    v
+              4 -> 5 -> 6`
+this case will be solved i.e we will not detect it as a cycle. Because, when
+we visit 2, updatevisited[2]=true,
+and then 4 updatevisited[4]=true,
+and then 5, updatevisited[5]=true,
+and then 6, updatevisited[6]=true, now we will backtrack
+so now 6, updatevisited[6]=false,
+and now 5, updatevisited[5]=false,
+and now 4, updatevisited[4]=false,
+and now, other link of 2 i.e 3 gets visited so,
+now 3, updatevisited[3]=true,
+and now 5, checking if(updatevisited[5]==true) but it is not true as we have updatevisited[5] as false. Hence cycle is not detected.
+
+Time complexity : O(E+V)
+*/
+
+
+class Solution {
+    Set<Integer> visited = new HashSet<>();
+    Map<Integer,List<Integer>> map = new HashMap<>();
+    Map<Integer,Boolean> dp = new HashMap<>();
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        for(int i=0;i<numCourses;i++) map.put(i,new ArrayList<>());
+        for(int[] ar : prerequisites){
+            map.get(ar[1]).add(ar[0]);
+        }
+        for(int i=0;i<numCourses;i++){
+            if(!visited.contains(i) && !dfs(i,new HashSet<>())) return false;
+        }
+        return true;
+    }
+    public boolean dfs(int i, Set<Integer> updateVisited){
+        if(updateVisited.contains(i)) return false;
+        if(dp.containsKey(i)) return dp.get(i);
+        updateVisited.add(i);
+        visited.add(i);
+        boolean check = true;
+        for(int link : map.get(i)){
+            check = check && dfs(link, updateVisited);
+        }
+        updateVisited.remove(i);
+        dp.put(i, check);
+        return check;
+    }
+}

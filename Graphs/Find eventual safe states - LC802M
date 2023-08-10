@@ -1,0 +1,28 @@
+class Solution {
+    Set<Integer> visited = new HashSet<>();
+    List<Integer> ans = new ArrayList<>();
+    Map<Integer,List<Integer>> map = new HashMap<>();
+    Map<Integer,Boolean> dp = new HashMap<>();
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        int n = graph.length;
+        for(int i=0;i<n;i++) map.put(i, new ArrayList<>());
+        for(int i=0;i<n;i++) for(int j : graph[i]) map.get(i).add(j);
+        for(int i=0;i<n;i++){
+            if(dfs(i, new HashSet<>())) ans.add(i);
+        }
+        return ans;
+    }
+    public boolean dfs(int i, Set<Integer> updateVisited){
+        if(updateVisited.contains(i)) return false;
+        if(dp.containsKey(i)) return dp.get(i);
+        updateVisited.add(i);
+        visited.add(i);
+        boolean check = true;
+        for(int link : map.get(i)){
+            check = check && dfs(link, updateVisited);
+        }
+        updateVisited.remove(i);
+        dp.put(i,check);
+        return check;
+    }
+}

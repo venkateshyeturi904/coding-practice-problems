@@ -1,0 +1,20 @@
+class Solution {
+    int[] coins;
+    Integer[][] dp;
+    public int change(int amount, int[] coins) {
+        int n = coins.length;
+        dp = new Integer[n+1][amount+1];
+        this.coins = coins;
+        return dfs(0,amount);
+    }
+    public int dfs(int i, int amount){
+        if(amount==0) return 1;
+        if(i==coins.length) return 0;
+        if(dp[i][amount]!=null) return dp[i][amount];
+        int count = 0;
+        for(int c=0;c<=(amount/coins[i]);c++){
+            count += dfs(i+1, amount - c*coins[i]);
+        }
+        return dp[i][amount]= count;
+    }
+}

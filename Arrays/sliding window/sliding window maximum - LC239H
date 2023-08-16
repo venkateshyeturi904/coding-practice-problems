@@ -9,8 +9,8 @@ If the index of peek element is within the distance of k from current index i, w
 If index of peek element is not within the distance of k from current index, we can just pop out that element as it will no more be useful for us in next indices. Now we have to check next peek element if it is within distance of k. If not pop it again until we reach within distance k index.
 
 Complexity
-Time complexity: O(nlogn)O(nlogn)O(nlogn)
-Space complexity: O(n)O(n)O(n)
+Time complexity: O(nlogn)
+Space complexity: O(n)
 Code
 class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {

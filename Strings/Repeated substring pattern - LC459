@@ -1,0 +1,21 @@
+class Solution {
+    public boolean repeatedSubstringPattern(String s) {
+        for(int len=1;len<=s.length()/2;len++){
+            if(s.length()%len != 0){
+                continue;
+            }
+            String check = s.substring(0,len);
+            boolean found = true;
+            for(int i=0;i+len<=s.length();i+=len){
+                if(!s.substring(i,i+len).equals(check)){
+                    found = false;
+                    break;
+                }
+            }
+            if(found){
+               return true; 
+            }
+        }
+        return false;
+    }
+}

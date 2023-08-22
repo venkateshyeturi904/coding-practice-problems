@@ -1,0 +1,20 @@
+class Solution {
+    public String convertToTitle(int col) {
+        int offset = 64;
+        String ans = "";
+        Map<Integer,Character> map = new HashMap<>();
+        map.put(0,'Z');
+        for(int i=1;i<=26;i++){
+            map.put(i, (char)(offset+i));
+        }
+        while(col>0){
+            int rem = col%26;
+            ans = String.valueOf(map.get(rem)) + ""+ans;
+            if(col%26==0){
+                col--;
+            }
+            col/=26;
+        }
+        return ans;
+    }
+}

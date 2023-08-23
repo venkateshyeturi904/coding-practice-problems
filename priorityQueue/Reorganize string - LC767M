@@ -1,0 +1,44 @@
+class Solution {
+    public String reorganizeString(String s) {
+        PriorityQueue<Pair<Character,Integer>> pq = new PriorityQueue<>((a,b)->b.getValue()-a.getValue());
+        Map<Character,Integer> map = new HashMap<>();
+        StringBuilder str = new StringBuilder();
+        for(char c : s.toCharArray()){
+            map.put(c, map.getOrDefault(c,0)+1);
+        }
+        for(Map.Entry<Character, Integer> entry : map.entrySet()){
+            pq.offer(new Pair<>(entry.getKey(), entry.getValue()));
+        }
+        char lastChar = '@';
+        while(!pq.isEmpty()){
+            Pair<Character,Integer> curr = pq.poll();
+            if(lastChar=='@'){
+                str.append(curr.getKey());
+                if(curr.getValue()>1){ 
+                    pq.offer(new Pair<>(curr.getKey(), curr.getValue()-1));
+                }
+                lastChar = curr.getKey();
+                continue;
+            }
+            if(lastChar==curr.getKey()){
+                if(pq.isEmpty()) return "";
+                Pair<Character,Integer> curr2 = pq.poll();
+                str.append(curr2.getKey());
+                if(curr.getValue()>0){
+                    pq.offer(new Pair<>(curr.getKey(), curr.getValue()));
+                }
+                if(curr2.getValue()>1){
+                    pq.offer(new Pair<>(curr2.getKey(), curr2.getValue()-1));
+                }
+                lastChar = curr2.getKey();
+            }else{
+                str.append(curr.getKey());
+                lastChar = curr.getKey();
+                if(curr.getValue()>1){
+                    pq.offer(new Pair<>(curr.getKey(), curr.getValue()-1));
+                }
+            }
+        }
+        return str.reverse().toString();
+    }
+}

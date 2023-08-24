@@ -1,0 +1,61 @@
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<List<String>> lists = new ArrayList<>();
+        List<String> ans = new ArrayList<>();
+        List<Integer> sizeOfEachList = new ArrayList<>();
+        int n = words.length;
+        int i = 0;
+        while(i<n){
+            int charCount = words[i].length();
+            int count = words[i].length();
+            int j = i+1;
+            List<String> temp = new ArrayList<>(Arrays.asList(words[i]));
+            while(j<n && count + 1 + words[j].length() <= maxWidth){
+                temp.add(words[j]);
+                count = count + words[j].length() +1;
+                charCount += words[j].length();
+                j++;
+            }
+            lists.add(new ArrayList<>(temp));
+            sizeOfEachList.add(charCount);
+            i = j;
+        }
+        System.out.println(sizeOfEachList.toString());
+        for(int j=0;j<lists.size()-1;j++){
+            List<String> curr = lists.get(j);
+            int sizeOfCurr = curr.size();
+            String getString = dfs(sizeOfCurr-1,curr,maxWidth-sizeOfEachList.get(j));
+            ans.add(getString);
+        }
+        String finalString = "";
+        for(String str : lists.get(lists.size()-1)){
+            if(finalString.length()==0){
+                finalString += new String(str);
+            }else{
+                finalString = finalString + " " + str;
+            }
+        }
+        for(int k=maxWidth-finalString.length();k>0;k--){
+            finalString += " ";
+        }
+        ans.add(finalString);
+        return ans;
+    }
+    public String dfs(int i, List<String> list, int remSpace){
+        if(i==0){
+            String spaces = "";
+            for(int k=0;k<remSpace;k++){
+                spaces += " ";
+            }
+            return list.get(i)+spaces;
+        }
+        int noOfGaps = i;
+        int noOfSpaces = remSpace / noOfGaps ;
+        String ret = "";
+        for(int j=0;j<noOfSpaces;j++){
+            ret += " ";
+        }
+        ret += list.get(i); 
+        return dfs(i-1, list, remSpace-noOfSpaces) + ret;
+    }
+}

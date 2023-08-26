@@ -1,0 +1,42 @@
+Intuition
+At each index i, apply binary search and find out least possible index right side to i having left coordinate greater than right coordinate of current pair.
+
+Complexity
+Time complexity: O(nlogn)O(nlogn)O(nlogn)
+Space complexity: O(n)O(n)O(n)
+Code
+class Solution {
+    public int findLongestChain(int[][] pairs) {
+        Arrays.sort(pairs,(a,b)->a[0]-b[0]);
+        int n = pairs.length;
+        Integer[] dp = new Integer[n+1];
+        return 1+dfs(0, pairs, dp);
+    }
+    public int dfs(int i, int[][] pairs, Integer[] dp){
+        if(i==pairs.length){
+            return 0;
+        }
+        if(dp[i]!=null) return dp[i];
+        int currLeft = pairs[i][0];
+        int currRight = pairs[i][1];
+        int leftIndex = i+1;
+        int rightIndex = pairs.length-1;
+        int foundIndex = -1;
+        while(leftIndex<=rightIndex){
+            int midIndex = (leftIndex + rightIndex)/2;
+            int leftElement = pairs[midIndex][0];
+            if(leftElement>currRight){
+                foundIndex = midIndex;
+                rightIndex = midIndex - 1;
+            }else{
+                leftIndex = midIndex + 1;
+            }
+        }
+        int take = 0, notTake = 0;
+        if(foundIndex!=-1){
+            take = 1+dfs(foundIndex, pairs, dp);
+        }
+        notTake = dfs(i+1, pairs, dp);
+        return dp[i]=Math.max(take, notTake);
+    }
+}

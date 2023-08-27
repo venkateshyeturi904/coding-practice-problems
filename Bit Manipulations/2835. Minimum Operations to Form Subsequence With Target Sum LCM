@@ -1,0 +1,53 @@
+/*
+Intuition
+Without using bit manipulations, we may arrive at a wrong solution where some of the testcases will fail like
+[16,16,4]. Using this approach, we just maintain the count of each bit and store the same. Traversing through each bit of target, if the bit in some position is 1, we try to search if that equivalent decimal number is available or can be formed by traversing to the right side of the binary number (here it is left side of the array for simplicity).
+
+Approach
+Complexity
+Time complexity:
+Space complexity:
+Code
+*/
+class Solution {
+    public int minOperations(List<Integer> nums, int target) {
+        int[] count = new int[32];
+        long sum = nums.stream().mapToLong(Integer::longValue).sum();
+        if(target>sum){
+            return -1;
+        }
+        int ans = 0;
+        for(int num : nums){
+            int curr = num;
+            for(int j=0;j<32;j++){
+                if(((1<<j) & curr) != 0){
+                    count[j]++;
+                }
+            }
+        }
+        for(int j=0;j<32;j++){
+            if(((1<<j) & target) != 0){
+                if(count[j]>=1){
+                    count[j]--;
+                }else{
+                    int copyJ = j;
+                    while(copyJ<32 && count[copyJ]<1){
+                        copyJ++;
+                    }
+                    if(copyJ<32){
+                        count[copyJ]--;
+                    }
+                    for(int k = copyJ-1;k>=j;k--){
+                        count[k] = 1;
+                    }
+                    ans += (copyJ - j);
+                }
+            }
+            if(j+1<32){
+                count[j+1] += (count[j]/2);
+            }
+            
+        }
+        return ans;
+    }
+}

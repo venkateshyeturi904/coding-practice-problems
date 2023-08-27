@@ -1,0 +1,30 @@
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        int n = nums2.length;
+        int[] greatest = new int[n];
+        int[] ans = new int[nums1.length];
+        Stack<Integer> stack = new Stack<>();
+        Map<Integer,Integer> numberToIndex = new HashMap<>();
+        for(int i=0;i<n;i++){
+            numberToIndex.put(nums2[i], i);
+        }
+        stack.push(nums2[n-1]);
+        greatest[n-1] = -1;
+        for(int i=n-2;i>=0;i--){
+            int curr = nums2[i];
+            while(!stack.isEmpty() && stack.peek()<curr){
+                stack.pop();
+            }
+            if(stack.isEmpty()){
+                greatest[i] = -1;
+            }else{
+                greatest[i] = stack.peek();
+            }
+            stack.push(curr);
+        }
+        for(int i=0;i<nums1.length;i++){
+            ans[i] = greatest[numberToIndex.get(nums1[i])];
+        }
+        return ans;
+    }
+}

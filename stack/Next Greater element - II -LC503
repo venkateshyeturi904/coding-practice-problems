@@ -1,0 +1,47 @@
+/*
+Intuition
+Find the maximum element first and then assume that array ends at that maximum element itself. So now just go through the same approach as that of "NextGreaterElement - I" question i.e use a stack to store all the right side numbers and traverse from right to left , pop up all the elements till we get greater element than current element.
+
+After completion of this, we can restart the same process with the same stack from the actual end point of the array ( index = lenght - 1).
+
+Complexity
+Time complexity: O(n)O(n)O(n)
+Space complexity:O(n)O(n)O(n)
+Code
+*/
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        Stack<Integer> stack = new Stack<>();
+        int n = nums.length;
+        int[] ans = new int[n];
+        int maxIndex = 0;
+        int max = Arrays.stream(nums).max().getAsInt();
+        for(int i=0;i<n;i++){
+            if(nums[i]==max){
+                maxIndex = i;
+            }
+        }
+        for(int i=maxIndex;i>=0;i--){
+            if(nums[i]==max){
+                ans[i] = -1;
+                stack.push(nums[i]);
+            }else{
+                int curr = nums[i];
+                while(stack.peek()<=curr){
+                    stack.pop();
+                }
+                ans[i] = stack.peek();
+                stack.push(curr);
+            }
+        }
+        for(int i=n-1;i>maxIndex;i--){
+            int curr = nums[i];
+            while(stack.peek()<=curr){
+                stack.pop();
+            }
+            ans[i] = stack.peek();
+            stack.push(curr);
+        }   
+        return ans;
+    }
+}

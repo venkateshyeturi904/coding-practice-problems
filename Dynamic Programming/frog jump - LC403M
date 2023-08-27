@@ -1,0 +1,59 @@
+/*
+Intuition
+Use the traditional dynamic programming but the tricky part is if we use the 2-D array of size n*max(stones), it results in memory limit exceeded.
+For the same, we can replace with the hashmap to store the already visited combinations of index and previous steps.
+
+Approach
+For each index, we will have 3 options i.e move right with prevSteps+1 no.of steps or move right with prevSteps no.of steps or move right with prevSteps - 1 no.of steps for which we can just go with recursion to cover all the possibilities.
+As we try to avoid going into exponential time complexity (3^n) , we use dynamic programming i.e we store the visited combination and use whenever required.
+
+Complexity
+Time complexity : Not sure (please comment if anyone can !)
+Space complexity:O(n2)O(n^2)O(n 
+2
+ )
+ */
+Code
+class Solution {
+    Map<Pair<Integer,Integer>, Boolean> dp = new HashMap<>();
+    public boolean canCross(int[] stones) {
+        int n = stones.length;
+        int max = stones[n-1];
+        if(stones[1]!=1){
+            return false;
+        }
+        Map<Integer,Integer> map = new HashMap<>();
+        for(int i=0;i<n;i++){
+            map.put(stones[i], i);
+        }
+        return dfs(1, 1, stones, map);
+    }
+    public boolean dfs(int i, int prevSteps, int[] stones, Map<Integer,Integer> map){
+        if(i==stones.length-1){
+            return true;
+        }
+        if(dp.containsKey(new Pair<>(i, prevSteps))){
+            return dp.get(new Pair<>(i, prevSteps));
+        }
+        int destination1 = stones[i] + prevSteps + 1;
+        int destination2 = stones[i] + prevSteps;
+        int destination3 = stones[i] + prevSteps - 1;
+        boolean check = false;
+        if(map.containsKey(destination1)){
+            int foundNextIndex = map.get(destination1);
+            check = check || dfs(foundNextIndex, prevSteps+1, stones, map);
+        }
+        if(map.containsKey(destination2)){
+            int foundNextIndex = map.get(destination2);
+            check = check || dfs(foundNextIndex, prevSteps, stones, map);
+        }
+        if(map.containsKey(destination3)){
+            int foundNextIndex = map.get(destination3);
+            if(foundNextIndex>i){
+                check = check || dfs(foundNextIndex, prevSteps-1, stones, map);    
+            }
+        }
+        dp.put(new Pair<>(i, prevSteps), check);
+        return check;
+    }
+}

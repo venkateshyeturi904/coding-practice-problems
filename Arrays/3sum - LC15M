@@ -1,0 +1,46 @@
+/*
+Intuition
+Apply sorting to the array and start the process.
+Out of three elements, try to fix first element and apply two pointer approach to find the remaining two elements.
+To make sure we collect distinct pairs, we check previous number and current number are equal or not.
+
+Complexity
+Time complexity: O(nlogn)O(nlogn)O(nlogn)
+Space complexity: O(n)O(n)O(n)
+Code
+*/
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> ans = new ArrayList<>();
+        int n = nums.length;
+        for(int i=0;i<n;i++){
+            if(i!=0 && nums[i]==nums[i-1]){
+                continue;
+            }
+            int left = i+1;
+            int right = n-1;
+            int required = -nums[i];
+            int prevLeft = Integer.MIN_VALUE;
+            int prevRight = Integer.MIN_VALUE;
+            while(left<right){
+                int leftElement = nums[left];
+                int rightElement = nums[right];
+                if(leftElement + rightElement == required){
+                    if(leftElement!=prevLeft || rightElement!=prevRight){
+                        ans.add(new ArrayList<>(Arrays.asList(nums[i], leftElement, rightElement)));
+                    }
+                    prevLeft = leftElement;
+                    prevRight = rightElement;
+                    left++;
+                    right--;
+                }else if(leftElement + rightElement < required){
+                    left++;
+                }else{
+                    right--;
+                }
+            }
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,56 @@
+/*
+Intuition
+For every top or pop operations, we just remove all the elements from the main queue and return the last one. But we loose the content if we just remove , so we save the elements in the same order in another queue from which we again transfer to our main queue back.
+
+Complexity
+Time complexity:
+- push : O(1)
+- pop  : O(n)
+- top  : O(n)
+- size : O(1)
+Space complexity: O(n)O(n)O(n)
+Code
+
+*/
+
+class MyStack {
+    Queue<Integer> q1 ;
+    Queue<Integer> q2 ;
+    public MyStack() {  
+        q1 = new LinkedList<>();
+        q2 = new LinkedList<>();
+    }
+    
+    public void push(int x) {
+        q1.offer(x);
+    }
+    
+    public int pop() {
+        int size = q1.size();
+        for(int i=1;i<size;i++){
+            q2.offer(q1.poll());
+        }
+        int pop = q1.poll();
+        for(int i=1;i<size;i++){
+            q1.offer(q2.poll());
+        }
+        return pop;
+    }   
+    
+    public int top() {
+        int size = q1.size();
+        for(int i=1;i<size;i++){
+            q2.offer(q1.poll());
+        }
+        int pop = q1.poll();
+        for(int i=1;i<size;i++){
+            q1.offer(q2.poll());
+        }
+        q1.offer(pop);
+        return pop;
+    }
+    
+    public boolean empty() {
+        return q1.size() ==0;
+    }
+}

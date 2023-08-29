@@ -1,0 +1,57 @@
+/*
+
+Intuition
+For each index i, find the next smaller element index ( if not found, put heights.length ) and also the previous smaller element index ( if not found put it as 0 ).
+Now for each index i, having the current element heights[i], find the span of the rectangle formed i.e by subtracting the prev smaller index from the next smaller element index.
+By multiplying the span with the current element, we get the area for which we need to find the maximum possible value.
+
+Application of stack: For finding the next and previous smaller element indices, we can use stack to get it in O(n) time.
+
+Complexity
+Time complexity:O(n)O(n)O(n)
+Space complexity:O(n)O(n)O(n)
+Code
+
+*/
+
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int maxArea = 0;
+        int n = heights.length;
+        int[] nextSmallerIndex = new int[n];
+        int[] prevSmallerIndex = new int[n];
+        Stack<Integer> stack = new Stack<>();
+        for(int i=n-1;i>=0;i--){
+            int curr = heights[i];
+            while(!stack.isEmpty() && heights[stack.peek()]>=curr){
+                stack.pop();
+            }
+            if(stack.isEmpty()){
+                nextSmallerIndex[i] = n;
+            }else{
+                nextSmallerIndex[i] = stack.peek();
+            }
+            stack.push(i);
+        }
+        stack.clear();
+        for(int i=0;i<n;i++){
+            int curr = heights[i];
+            while(!stack.isEmpty() && heights[stack.peek()]>=curr){
+                stack.pop();
+            }
+            if(stack.isEmpty()){
+                prevSmallerIndex[i] = -1;
+            }else{
+                prevSmallerIndex[i] = stack.peek();
+            }
+            stack.push(i);
+        }
+        System.out.println(Arrays.toString(prevSmallerIndex) + "\n" + Arrays.toString(nextSmallerIndex));
+        for(int i=0;i<n;i++){
+            int curr = heights[i];
+            int currArea = (nextSmallerIndex[i] - prevSmallerIndex[i]-1)*curr;
+            maxArea = Math.max(maxArea, currArea);
+        }
+        return maxArea;
+    }
+}

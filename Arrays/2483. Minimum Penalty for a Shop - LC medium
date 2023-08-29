@@ -1,0 +1,59 @@
+/*
+Intuition
+At an index i, the penalty is simply the no.of Ys left from that index, and no.of Ns already visited till index i-1.
+So for this, we can just save the count using prefix and suffix sum arrays and find the penalty for each index.
+
+Complexity
+Time complexity: O(n)O(n)O(n)
+Space complexity: O(n)O(n)O(n)
+Code
+
+*/
+
+class Solution {
+    public int bestClosingTime(String customers) {
+        int n = customers.length();
+        int ans = -1;
+        int[] noOfYsLeft = new int[n];
+        int[] noOfNsSoFar = new int[n];
+        int penalty = Integer.MAX_VALUE;
+        if(customers.charAt(0)=='N'){
+            noOfNsSoFar[0] = 1;
+        }
+        for(int i=1;i<n;i++){
+            if(customers.charAt(i)=='N'){
+                noOfNsSoFar[i] = noOfNsSoFar[i-1] + 1;
+            }else{
+                noOfNsSoFar[i] = noOfNsSoFar[i-1];
+            }
+        }
+        if(customers.charAt(n-1)=='Y'){
+            noOfYsLeft[n-1] = 1;
+        }
+        for(int i=n-2;i>=0;i--){
+            if(customers.charAt(i)=='Y'){
+                noOfYsLeft[i] = 1+noOfYsLeft[i+1];
+            }else{
+                noOfYsLeft[i] = noOfYsLeft[i+1];
+            }
+        }
+        int penaltyAtZero = noOfYsLeft[0];
+        if(penaltyAtZero<penalty){
+            penalty = penaltyAtZero;
+            ans = 0;
+        }
+        for(int i=1;i<n;i++){
+            int penaltyAtI = noOfYsLeft[i] + noOfNsSoFar[i-1];
+            if(penaltyAtI<penalty){
+                penalty = penaltyAtI;
+                ans = i;
+            }
+        }
+        int penaltyAtN = noOfNsSoFar[n-1];
+        if(penaltyAtN<penalty){
+            penalty = penaltyAtN;
+            ans = n;
+        }
+        return ans;
+    }
+}

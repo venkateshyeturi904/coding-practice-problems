@@ -1,0 +1,50 @@
+138. Copy List with Random Pointer
+class Solution {
+    public Node copyRandomList(Node head) {
+        Node ans = new Node(0);
+        Node saveAns = ans;
+        Map<Node,Node> map = new HashMap<>();
+        Node dummyHead = head;
+        while(dummyHead!=null){
+            Node newNode = new Node(dummyHead.val);
+            if(dummyHead.next!=null){
+                newNode.next = new Node(dummyHead.next.val);
+            }
+            if(dummyHead.random!=null){
+                newNode.random = new Node(dummyHead.random.val);
+            }
+            map.put(dummyHead, newNode);
+            dummyHead = dummyHead.next;
+        }
+        while(head!=null){
+            ans.next = map.get(head);
+            if(head.random!=null){
+                ans.next.random = map.get(head.random);
+            }
+            ans = ans.next;
+            head = head.next;
+        }
+        return saveAns.next;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

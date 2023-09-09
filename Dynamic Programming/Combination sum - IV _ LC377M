@@ -1,0 +1,21 @@
+class Solution {
+    public int combinationSum4(int[] nums, int target) {
+        Integer[] dp = new Integer[target+1];
+        return dfs(target, nums, dp);
+    }
+    public int dfs(int n, int[] nums, Integer[] dp){
+        if(n==0){
+            return 1;
+        }else if(n<0){
+            return 0;
+        }
+        if(dp[n]!=null){
+            return dp[n];
+        }
+        int count = 0;
+        for(int num : nums){
+            count += dfs(n-num, nums, dp);
+        }
+        return dp[n] = count;
+    }
+}

@@ -1,0 +1,32 @@
+class Solution {
+    public int minimumMoves(int[][] grid) {
+        Set<int[]> zeroIndices = new HashSet<>();
+        Set<int[]> moreThanOneIndices = new HashSet<>();
+        for(int i=0;i<3;i++){
+            for(int j=0;j<3;j++){
+                if(grid[i][j]==0){
+                    zeroIndices.add(new int[]{i,j});
+                }else if(grid[i][j]>1){
+                    moreThanOneIndices.add(new int[]{i,j});
+                }
+            }
+        }
+        if(zeroIndices.size()==0){
+            return 0;
+        }
+        int ans = Integer.MAX_VALUE;
+        for(int[] moreIndex : moreThanOneIndices){
+            int x1 = moreIndex[0], y1 = moreIndex[1];
+            for(int[] zeroIndex : zeroIndices){
+                int x0 = zeroIndex[0], y0 = zeroIndex[1];
+                int dist = Math.abs(x1-x0)+Math.abs(y1-y0);
+                grid[x0][y0] = 1;
+                grid[x1][y1]--;
+                ans = Math.min(ans, dist + minimumMoves(grid));
+                grid[x1][y1]++;
+                grid[x0][y0] = 0;
+            }
+        }
+        return ans;
+    }
+}

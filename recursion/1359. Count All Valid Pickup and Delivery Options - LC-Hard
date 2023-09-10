@@ -1,0 +1,37 @@
+/*
+Intuition
+For each n, the no.of possibilites will depend on the no.of possibilities of (n-1).
+
+We know the no.of possibilities for n=1 is 1.
+
+Say we are at n = 2,
+
+already existing combinations are P1D1, now , we want to insert P2D2 somehow. This P2D2 can be inserted with different distances between P2 and D2, i.e
+
+if distance between P2 and D2 is 0 : then combinations are __P2D2, _P2D2_, P2D2__
+if distance between P2 and D2 is 1 : the combinations are P2_D2_, _P2_D2
+if the distance between P2 and D2 is 2 : the combinations are P2__D2,
+The distance between P2 and D2 cannot be 3 or more because we have only 2 elements (P1 and D1) in the previous combinations.
+Total no.of combinations for n=2 : 3 + 2 + 1 = 6.
+
+As there is only one possibility for n-1, we have 6*1 = 6 here.
+
+If we have k combinations for n-1, we will have 6*k = 6k here.
+
+Complexity
+Time complexity:
+Space complexity:
+Code
+*/
+class Solution {
+    public int countOrders(int n) {
+        int mod = 1000000007;
+        if (n == 1) {
+            return 1;
+        }
+        int getLastCount = countOrders(n - 1);
+        int noOfPossiblePositions = 2 * (n - 1) + 1;
+        long noOfTotalPossiblePositions = (long) (((long) noOfPossiblePositions * (noOfPossiblePositions + 1)) / 2) % mod;
+        return (int) ((getLastCount * noOfTotalPossiblePositions) % mod);
+    }
+}
